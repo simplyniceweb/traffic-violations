@@ -58,8 +58,10 @@ Route::middleware(['auth', 'role:reporter'])->group(function () {
     })->name('reporter.dashboard');
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/show', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/reports/store', [ReportController::class, 'store'])->name('reports.store');
+    Route::post('/reports/destroy', [ReportController::class, 'destroy'])->name('reports.destroy');
 });
 
 require __DIR__.'/auth.php';
