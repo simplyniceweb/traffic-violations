@@ -1,0 +1,1 @@
+<a href="{{ url('/')}}"><img src="{{ asset('assets/pngegg.png') }}" class="block w-24 h-auto  object-contain" alt=""></a>
