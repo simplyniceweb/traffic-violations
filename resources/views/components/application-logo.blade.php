@@ -1,1 +1,1 @@
-<a href="{{ url('/')}}"><img src="{{ asset('assets/pngegg.png') }}" class="block w-24 h-auto  object-contain" alt=""></a>
+<a href="{{ url('/')}}"><img src="{{ asset('assets/pngegg.png') }}" class="block w-14 h-auto sm:w-18 object-contain" alt=""></a>

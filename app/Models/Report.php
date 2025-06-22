@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'region_id',
+        'province_id',
+        'city_municipality_id',
+        'barangay_id',
+        'description',
+        'incident_date',
+    ];
+
     public function reporter()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -34,5 +44,25 @@ class Report extends Model
     public function violations()
     {
         return $this->belongsToMany(ViolationCategory::class, 'report_violation');
+    }
+
+    public function region() {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function province() {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function city() {
+        return $this->belongsTo(CitiesMunicipalities::class, 'city_municipality_id');
+    }
+
+    public function barangay() {
+        return $this->belongsTo(Barangay::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

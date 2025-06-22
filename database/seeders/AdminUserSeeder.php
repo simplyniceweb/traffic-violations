@@ -19,9 +19,18 @@ class AdminUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@traffic-violations.com'],
             [
-                'name' => 'Admin User',
+                'name' => 'Admininistrator',
                 'password' => Hash::make('password123'), // change to a secure password
                 'role' => 'admin',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'simplyniceweb@gmail.com'],
+            [
+                'name' => 'Reporter',
+                'password' => Hash::make('password'), // change to a secure password
+                'role' => 'reporter',
             ]
         );
     }

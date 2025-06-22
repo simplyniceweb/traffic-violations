@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('region_id')->constrained()->onDelete('cascade');
+            $table->foreignId('province_id')->constrained()->onDelete('cascade');
+            $table->foreignId('city_municipality_id')->constrained('cities_municipalities')->onDelete('cascade');
+            $table->foreignId('barangay_id')->constrained()->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->string('location');
             $table->dateTime('incident_date');
             $table->enum('status', ['pending', 'under_review', 'resolved', 'rejected'])->default('pending');
             $table->foreignId('officer_id')->nullable()->constrained('users')->nullOnDelete();

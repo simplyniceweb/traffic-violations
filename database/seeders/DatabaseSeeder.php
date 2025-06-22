@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\BarangaySeeder;
 use Database\Seeders\ViolationCategorySeeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,6 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([ViolationCategorySeeder::class, AdminUserSeeder::class]);
+        $this->call([
+            ViolationCategorySeeder::class, 
+            AdminUserSeeder::class,
+            RegionSeeder::class,
+            ProvinceSeeder::class,
+            CitiesMunicipalitiesSeeder::class,
+            // BarangaySeeder::class,
+        ]);
     }
 }

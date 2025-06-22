@@ -75,7 +75,8 @@
             </header>
 
             <main class="mt-6 text-center">
-                <h1 class="text-6xl text-shadow-2xl text-white">Traffic Violations Management System</h1>
+                <a href="/dashboard" class="bg-yellow-400 text-white rounded w-30 px-5 py-3 font-bold">REPORT VIOLATION</a>
+                <h1 class="text-6xl text-shadow-2xl text-white mt-5">Traffic Violations Management System</h1>
             </main>
 
             <footer class="py-16 text-center text-sm text-white dark:text-white/70 text-shadow-2xl">
