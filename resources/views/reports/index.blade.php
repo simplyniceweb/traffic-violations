@@ -35,7 +35,7 @@
                             <td class="py-2 px-4 border-b">{{ $report->province->province_name ?? 'N/A' }}</td>
                             <td class="py-2 px-4 border-b">{{ $report->city->city_name ?? 'N/A' }}</td>
                             <td class="py-2 px-4 border-b">{{ $report->barangay->brgy_name ?? 'N/A' }}</td>
-                            <td class="py-2 px-4 border-b">{{ $report->description }}</td>
+                            <td class="py-2 px-4 border-b">{{ \Illuminate\Support\Str::limit($report->description, 150) }}</td>
                             <td class="py-2 px-4 border-b">{{ $report->created_at->format('Y-m-d H:i') }}</td>
                             <td class="py-2 px-4 border-b">
                                 @if($report->status === 'pending')

@@ -16,12 +16,12 @@ class ReportController extends Controller
     public function index()
     {
 
-    $reports = \App\Models\Report::with([
-            'region:id,region_name',
-            'province:id,province_name',
-            'city:id,city_name',
-            'barangay:id,brgy_name',
-            'user:id,name'
+        $reports = \App\Models\Report::with([
+                'region:id,region_name',
+                'province:id,province_name',
+                'city:id,city_name',
+                'barangay:id,brgy_name',
+                'user:id,name'
         ])->latest()->paginate(10);
 
         return view('reports.index', compact('reports'));
@@ -46,28 +46,47 @@ class ReportController extends Controller
             'barangay_id' => 'required|exists:barangays,id',
             'description' => 'required|string',
             'datetime' => 'required|date',
-            // 'evidence' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
+            'evidence' => 'nullable|array',
+            'evidence.*' => 'file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
         ]);
 
-        // dd($request->datetime);
-
-        // $path = null;
-        // if ($request->hasFile('evidence')) {
-        //     $path = $request->file('evidence')->store('reports', 'public');
-        // }
-
-        Report::create([
+        $report = Report::create([
             'user_id' => auth()->user() ? auth()->user()->id : null,
-            // 'violation_category_id' => $request->violation_type,
             'region_id' => $request->region_id,
             'province_id' => $request->province_id,
             'city_municipality_id' => $request->city_municipality_id,
             'barangay_id' => $request->barangay_id,
             'description' => $request->description,
             'incident_date' => Carbon::parse(str_replace('T', ' ', $request->datetime)),
-            // 'evidence_path' => $path,
         ]);
 
+        // Attach the violation type to the report
+        $report->violations()->sync($request->violation_type);
+
+        // Handle file uploads
+        if ($request->hasFile('evidence')) {
+            foreach ($request->file('evidence') as $file) {
+                $path = $file->store('reports', 'public');
+
+                // Determine the type
+                $extension = strtolower($file->getClientOriginalExtension());
+                $type = in_array($extension, ['mp4', 'mov', 'avi']) ? 'video' : 'photo';
+
+                // Save to report_attachments table
+                $report->attachments()->create([
+                    'file_path' => $path,
+                    'type' => $type,
+                ]);
+            }
+        }
+
         return redirect()->route('reports.index')->with('success', 'Report submitted successfully.');
+    }
+
+    public function show(Report $report)
+    {
+        $report->load(['violations', 'attachments']);
+
+        return view('reports.show', compact('report'));
     }
 }

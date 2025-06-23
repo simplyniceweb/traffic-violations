@@ -21,7 +21,7 @@
             <!-- Violation Type -->
             <div class="mb-4">
                 <label for="violation_type" class="block font-semibold">Violation Type</label>
-                <select name="violation_type" id="violation_type" class="w-full border p-2 rounded">
+                <select name="violation_type[]" id="violation_type" class="w-full border p-2 rounded select2" multiple>
                     @foreach ($violations as $violation)
                         <option value="{{ $violation->id }}">{{ $violation->name }}</option>
                     @endforeach
@@ -99,7 +99,7 @@
             <!-- Upload Evidence -->
             <div class="mb-4">
                 <label for="evidence" class="block font-semibold">Upload Evidence (Photo/Video)</label>
-                <input type="file" name="evidence" id="evidence" class="w-full border p-2 rounded" accept="image/*,video/*">
+                <input type="file" name="evidence[]" multiple id="evidence" accept=".jpg,.jpeg,.png,.mp4,.mov,.avi" class="w-full border p-2 rounded" />
             </div>
 
             <div class="text-right">
@@ -110,3 +110,12 @@
         </form>
     </div>
 </x-app-layout>
+
+<script>
+    $(document).ready(function() {
+        $('#violation_type').select2({
+            placeholder: "Select violation(s)",
+            allowClear: true
+        });
+    });
+</script>
