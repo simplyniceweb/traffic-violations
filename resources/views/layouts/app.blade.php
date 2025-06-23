@@ -33,11 +33,15 @@
 
             <!-- Page Content -->
             <main>
-                @if (session('error'))
-                    <div class="mb-4 text-red-600 font-semibold">
-                        {{ session('error') }}
-                    </div>
-                @endif
+
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    @if (session('error'))
+                        <div class="mb-4 p-4 rounded bg-red-100 text-red-800 border border-red-300">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                </div>
+                
                 {{ $slot }}
             </main>
         </div>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('updated_by')->constrained('users')->onDelete('cascade');
             $table->enum('status', ['pending', 'under_review', 'resolved', 'rejected']);
             $table->text('remarks')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

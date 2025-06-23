@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('incident_date');
             $table->enum('status', ['pending', 'under_review', 'resolved', 'rejected'])->default('pending');
             $table->foreignId('officer_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

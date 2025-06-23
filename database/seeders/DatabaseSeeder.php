@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             ProvinceSeeder::class,
             CitiesMunicipalitiesSeeder::class,
-            // BarangaySeeder::class,
+            BarangaySeeder::class,
         ]);
     }
 }

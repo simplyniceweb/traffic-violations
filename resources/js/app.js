@@ -18,40 +18,60 @@ Alpine.data('locationDropdowns', () => ({
     isLoadingBarangays: false,
 
     init() {
-        // Optional: preselect if needed
+        // ✅ Pull values from data-* attributes on the element
+        this.selectedRegion = this.$el.dataset.initialRegion || '';
+        this.selectedProvince = this.$el.dataset.initialProvince || '';
+        this.selectedCity = this.$el.dataset.initialCity || '';
+        this.selectedBarangay = this.$el.dataset.initialBarangay || '';
+
+        if (this.selectedRegion) {
+            this.loadProvinces(true); // true = auto-load next levels
+        }
     },
 
-    loadProvinces() {
+    async loadProvinces(isInit = false) {
         this.resetBelow('province');
         if (!this.selectedRegion) return;
 
         this.isLoadingProvinces = true;
-        fetch(`/provinces/${this.selectedRegion}`)
-            .then(res => res.json())
-            .then(data => this.provinces = data)
-            .finally(() => this.isLoadingProvinces = false);
+        const res = await fetch(`/provinces/${this.selectedRegion}`);
+        this.provinces = await res.json();
+        this.isLoadingProvinces = false;
+
+        if (isInit && this.$el.dataset.initialProvince) {
+            // Re-assign selectedProvince AFTER provinces are loaded
+            this.selectedProvince = this.$el.dataset.initialProvince;
+            this.loadCities(true); // load cities next
+        }
     },
 
-    loadCities() {
+    async loadCities(isInit = false) {
         this.resetBelow('city');
         if (!this.selectedProvince) return;
 
         this.isLoadingCities = true;
-        fetch(`/cities/${this.selectedProvince}`)
-            .then(res => res.json())
-            .then(data => this.cities = data)
-            .finally(() => this.isLoadingCities = false);
+        const res = await fetch(`/cities/${this.selectedProvince}`);
+        this.cities = await res.json();
+        this.isLoadingCities = false;
+
+        if (isInit && this.$el.dataset.initialCity) {
+            this.selectedCity = this.$el.dataset.initialCity;
+            this.loadBarangays(true);
+        }
     },
 
-    loadBarangays() {
+    async loadBarangays(isInit = false) {
         this.resetBelow('barangay');
         if (!this.selectedCity) return;
 
         this.isLoadingBarangays = true;
-        fetch(`/barangays/${this.selectedCity}`)
-            .then(res => res.json())
-            .then(data => this.barangays = data)
-            .finally(() => this.isLoadingBarangays = false);
+        const res = await fetch(`/barangays/${this.selectedCity}`);
+        this.barangays = await res.json();
+        this.isLoadingBarangays = false;
+
+        if (isInit && this.$el.dataset.initialBarangay) {
+            this.selectedBarangay = this.$el.dataset.initialBarangay;
+        }
     },
 
     resetBelow(level) {
@@ -71,5 +91,6 @@ Alpine.data('locationDropdowns', () => ({
         }
     }
 }));
+
 
 Alpine.start();

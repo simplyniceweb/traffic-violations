@@ -7,14 +7,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportAttachmentController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/provinces/{region}', fn($id) => Province::where('region_id', $id)->orderBy('province_name')->get(['id', 'province_name']));
-Route::get('/cities/{province}', fn($id) => CitiesMunicipalities::where('province_id', $id)->orderBy('city_name')->get(['id', 'city_name']));
-Route::get('/barangays/{city}', fn($id) => Barangay::where('city_municipality_id', $id)->orderBy('brgy_name')->get(['id', 'brgy_name']));
+Route::get('/provinces/{region}', function ($regionId) {
+    return Province::where('region_id', $regionId)->get();
+});
+
+Route::get('/cities/{province}', function ($provinceId) {
+    return CitiesMunicipalities::where('province_id', $provinceId)->get();
+});
+
+Route::get('/barangays/{city}', function ($cityId) {
+    return Barangay::where('city_municipality_id', $cityId)->get();
+});
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
@@ -60,8 +69,12 @@ Route::middleware(['auth', 'role:reporter'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('/reports/store', [ReportController::class, 'store'])->name('reports.store');
-    Route::post('/reports/destroy', [ReportController::class, 'destroy'])->name('reports.destroy');
+    Route::get('/reports/edit/{id}', [ReportController::class, 'edit'])->name('reports.edit');
+    Route::put('/reports/edit/{id}', [ReportController::class, 'update'])->name('reports.update');
     Route::get('/reports/show/{report}', [ReportController::class, 'show'])->name('reports.show');
+    Route::delete('/reports/destroy/{id}', [ReportController::class, 'destroy'])->name('reports.destroy');
 });
+
+Route::delete('/attachments/{id}', [ReportAttachmentController::class, 'destroyAttachment'])->name('attachments.destroy');
 
 require __DIR__.'/auth.php';

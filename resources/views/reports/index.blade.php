@@ -6,6 +6,12 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
+        @if (session('success'))
+            <div class="mb-4 p-4 rounded bg-green-100 text-green-800 border border-green-300">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="mb-6">
             <a href="{{ route('reports.create') }}" class="bg-green-500 text-white rounded w-30 px-5 py-3 font-bold">
                 Create a Report
@@ -52,8 +58,14 @@
                                 <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
                                     <!-- View Button -->
                                     <a href="{{ route('reports.show', $report->id) }}"
-                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
+                                        class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
                                         View
+                                    </a>
+
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('reports.edit', $report->id) }}"
+                                        class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
+                                        Edit
                                     </a>
 
                                     <!-- Delete Button -->
@@ -67,6 +79,7 @@
                                     </form>
                                 </div>
                             </td>
+
                         </tr>
                     @empty
                         <tr>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('report_id')->constrained()->onDelete('cascade');
             $table->foreignId('violation_category_id')->constrained()->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('psgc_code', 50);
             $table->string('region_name');
             $table->string('region_code', 50);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

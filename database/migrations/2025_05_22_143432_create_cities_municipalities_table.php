@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('city_name');
             $table->string('psgc_code', 10);
             $table->foreignId('province_id')->constrained()->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

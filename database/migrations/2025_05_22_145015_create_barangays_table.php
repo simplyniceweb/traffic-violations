@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('city_municipality_id')->constrained('cities_municipalities')->onDelete('cascade');
             $table->string('province_code', 10);
             $table->string('region_code', 10);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
