@@ -12,11 +12,25 @@
             </div>
         @endif
 
-        <div class="mb-6">
-            <a href="{{ route('reports.create') }}" class="bg-green-500 text-white rounded w-30 px-5 py-3 font-bold">
+        <div class="mb-6 flex justify-between items-center flex-wrap gap-4">
+            <!-- Left: Create Button -->
+            <a href="{{ route('reports.create') }}" class="bg-green-500 text-white rounded px-5 py-3 font-bold">
                 Create a Report
             </a>
+
+            <!-- Right: Status Filter -->
+            <form method="GET" action="{{ route('reports.index') }}" class="inline-block">
+                <label for="status" class="font-semibold mr-2">Filter by Status:</label>
+                <select name="status" id="status" onchange="this.form.submit()" class="border rounded px-2 pr-8 py-1 w-40">
+                    <option value="">All</option>
+                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="resolved" {{ request('status') == 'resolved' ? 'selected' : '' }}>Resolved</option>
+                    <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                    <option value="under_review" {{ request('status') == 'under_review' ? 'selected' : '' }}>Under Review</option>
+                </select>
+            </form>
         </div>
+
 
         <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded">
             <table class="w-full text-sm text-left text-gray-700 dark:text-gray-200">
@@ -45,13 +59,13 @@
                             <td class="py-2 px-4 border-b">{{ $report->created_at->format('Y-m-d H:i') }}</td>
                             <td class="py-2 px-4 border-b">
                                 @if($report->status === 'pending')
-                                    <button class="rounded-full bg-yellow-500 text-white font-bold p-1 px-2">Pending</button>
-                                @elseif($report->status === 'in_progress')
-                                    <button class="rounded-full bg-blue-500 text-white font-bold p-1 px-2">In Progress</button>
+                                    <button class="rounded-full bg-yellow-500 text-white font-bold p-1 px-2 whitespace-nowrap">Pending</button>
+                                @elseif($report->status === 'under_review')
+                                    <button class="rounded-full bg-blue-500 text-white font-bold p-1 px-2 whitespace-nowrap">In Progress</button>
                                 @elseif($report->status === 'resolved')
-                                    <button class="rounded-full bg-green-500 text-white font-bold p-1 px-2">Resolved</button>
+                                    <button class="rounded-full bg-green-500 text-white font-bold p-1 px-2 whitespace-nowrap">Resolved</button>
                                 @elseif($report->status === 'rejected')
-                                    <button class="rounded-full bg-red-500 text-white font-bold p-1 px-2">Rejected</button>
+                                    <button class="rounded-full bg-red-500 text-white font-bold p-1 px-2 whitespace-nowrap">Rejected</button>
                                 @endif
                             </td>
                             <td class="py-2 px-4 border-b">

@@ -15,16 +15,23 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $status = $request->query('status');
 
-        $reports = \App\Models\Report::with([
+        $reports = Report::with([
                 'region:id,region_name',
                 'province:id,province_name',
                 'city:id,city_name',
                 'barangay:id,brgy_name',
                 'user:id,name'
-        ])->latest()->paginate(10);
+        ])
+        ->when($status, function ($query) use ($status) {
+            $query->where('status', $status);
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
         return view('reports.index', compact('reports'));
     }
