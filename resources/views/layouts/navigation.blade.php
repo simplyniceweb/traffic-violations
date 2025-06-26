@@ -27,9 +27,13 @@
                     <x-nav-link :href="route($route)" :active="request()->routeIs($route)">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
-                        {{ __('Reports') }}
-                    </x-nav-link>
+                    @if ($user->role === 'admin')
+                        @include('layouts.admin-nav')
+                    @elseif ($user->role === 'officer')
+                        @include('layouts.officer-nav')
+                    @elseif ($user->role === 'reporter')
+                        @include('layouts.reporter-nav')
+                    @endif
                 </div>
             </div>
 
