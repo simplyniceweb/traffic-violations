@@ -26,11 +26,20 @@ class AdminUserSeeder extends Seeder
         );
 
         User::updateOrCreate(
-            ['email' => 'simplyniceweb@gmail.com'],
+            ['email' => 'reporter@traffic-violations.com'],
             [
                 'name' => 'Reporter',
                 'password' => Hash::make('password'), // change to a secure password
                 'role' => 'reporter',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'officer@traffic-violations.com'],
+            [
+                'name' => 'Officer',
+                'password' => Hash::make('password'), // change to a secure password
+                'role' => 'officer',
             ]
         );
     }
