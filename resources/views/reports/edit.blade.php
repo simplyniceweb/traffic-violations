@@ -75,6 +75,14 @@
                         </template>
                     </select>
                 </div>
+                <div class="mb-4">
+                    <label class="block font-semibold">Street</label>
+                    <input type="text" name="" id="" class="w-full border p-2 rounded text-black">
+                </div>
+                <div class="mb-4">
+                    <label class="block font-semibold">Landmark</label>
+                    <input type="text" name="" id="" class="w-full border p-2 rounded text-black">
+                </div>
             </div>
 
             <div class="mb-4">
