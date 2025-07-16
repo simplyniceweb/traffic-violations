@@ -18,5 +18,57 @@
                 Create a Province
             </a>
         </div>
+
+        <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded">
+            <table class="w-full text-sm text-left text-gray-700 dark:text-gray-200">
+                <thead class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
+                    <tr class="bg-gray-100">
+                        <th class="py-2 px-4 border-b">Region</th>
+                        <th class="py-2 px-4 border-b">PSGC Code</th>
+                        <th class="py-2 px-4 border-b">Name</th>
+                        <th class="py-2 px-4 border-b">Region Code</th>
+                        <th class="py-2 px-4 border-b">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($provinces as $province)
+                        <td class="py-2 px-4 border-b">{{ $province->region->region_name ?? 'N/A' }}</td>
+                        <td class="py-2 px-4 border-b">{{ $province->psgc_code }}</td>
+                        <td class="py-2 px-4 border-b">{{ $province->name }}</td>
+                        <td class="py-2 px-4 border-b">{{ $province->province_code }}</td>
+                        <td class="py-2 px-4 border-b">
+                            <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
+                                <!-- View Button -->
+                                <a href="{{ route('admin.provinces.show', $province->id) }}"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
+                                    View
+                                </a>
+
+                                <!-- Edit Button -->
+                                <a href="{{ route('admin.provinces.edit', $province->id) }}"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
+                                    Edit
+                                </a>
+
+                                <!-- Delete Button -->
+                                <form action="{{ route('admin.provinces.destroy', $province->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:z-10 focus:outline-none border-l border-white">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            {{ $provinces->links() }}
+        </div>
     </div>
 </x-app-layout>

@@ -23,8 +23,8 @@
             <table class="w-full text-sm text-left text-gray-700 dark:text-gray-200">
                 <thead class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
                     <tr class="bg-gray-100">
+                        <th class="py-2 px-4 border-b">Region</th>
                         <th class="py-2 px-4 border-b">Province</th>
-                        <th class="py-2 px-4 border-b">PSGC Code</th>
                         <th class="py-2 px-4 border-b">PSGC Code</th>
                         <th class="py-2 px-4 border-b">Name</th>
                         <th class="py-2 px-4 border-b">City Code</th>
@@ -33,6 +33,7 @@
                 </thead>
                 <tbody>
                     @foreach ($cities as $city)
+                        <td class="py-2 px-4 border-b">{{ $city->province->region->region_name ?? 'N/A' }}</td>
                         <td class="py-2 px-4 border-b">{{ $city->province->province_name ?? 'N/A' }}</td>
                         <td class="py-2 px-4 border-b">{{ $city->psgc_code }}</td>
                         <td class="py-2 px-4 border-b">{{ $city->city_name }}</td>

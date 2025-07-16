@@ -9,8 +9,13 @@ class Region extends Model
 {
     use SoftDeletes;
 
-    public function province()
+    public function provinces()
     {
-        return $this->hasMany(Province::class);
+        return $this->hasMany(Province::class, 'id');
+    }
+
+    public function cities()
+    {
+        return $this->hasMany(CitiesMunicipalities::class);
     }
 }

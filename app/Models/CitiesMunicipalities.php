@@ -14,6 +14,11 @@ class CitiesMunicipalities extends Model
         return $this->belongsTo(Province::class);
     }
 
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
     public function barangays()
     {
         return $this->hasMany(Barangay::class, 'city_municipality_id');

@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class CityController extends Controller
 {
     public function index() {
-        $cities = CitiesMunicipalities::with('region')->orderBy('city_name')->paginate(10);
+        // $cities = CitiesMunicipalities::with('province')->orderBy('city_name')->paginate(10);
+        $cities = CitiesMunicipalities::with(['province.region'])->paginate(10);
         return view('cities.index', ['cities' => $cities]);
     }
 

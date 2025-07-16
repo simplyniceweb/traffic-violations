@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 class BarangayController extends Controller
 {
     public function index() {
-        $barangays = Barangay::with('cityMunicipality.province')->orderBy('brgy_name')->paginate(10);
+        $barangays = Barangay::with('cityMunicipality.province.region')
+            ->orderBy('brgy_name')
+            ->paginate(10);
         return view('barangays.index', ['barangays' => $barangays]);
     }
 }
