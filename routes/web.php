@@ -5,8 +5,12 @@ use App\Models\Province;
 use App\Models\CitiesMunicipalities;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BarangayController;
+use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\ReportAttachmentController;
 
 Route::get('/', function () {
@@ -47,10 +51,15 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', function () {
         return view('dashboard.admin');
-    })->name('admin.dashboard');
+    })->name('dashboard');
+
+    Route::resource('regions', RegionController::class);
+    Route::resource('provinces', ProvinceController::class);
+    Route::resource('cities', CityController::class);
+    Route::resource('barangays', BarangayController::class);
 });
 
 // Officer routes
