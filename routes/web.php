@@ -5,13 +5,14 @@ use App\Models\Province;
 use App\Models\CitiesMunicipalities;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\BarangayController;
-use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\Admin\BarangayController;
+use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\ReportAttachmentController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,26 +52,36 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard.admin');
     })->name('dashboard');
 
+    Route::resource('users', UserController::class);
+    Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+
     Route::resource('regions', RegionController::class);
+    Route::patch('regions/{id}/restore', [RegionController::class, 'restore'])->name('regions.restore');
+
     Route::resource('provinces', ProvinceController::class);
+    Route::patch('provinces/{id}/restore', [ProvinceController::class, 'restore'])->name('provinces.restore');
+
     Route::resource('cities', CityController::class);
+    Route::patch('cities/{id}/restore', [CityController::class, 'restore'])->name('cities.restore');
+
     Route::resource('barangays', BarangayController::class);
+    Route::patch('barangays/{id}/restore', [BarangayController::class, 'restore'])->name('barangays.restore');
 });
 
 // Officer routes
-Route::middleware(['auth', 'role:officer'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:officer'])->group(function () {
     Route::get('/officer/dashboard', function () {
         return view('dashboard.officer');
     })->name('officer.dashboard');
 });
 
 // Reporter routes
-Route::middleware(['auth', 'role:reporter'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:reporter'])->group(function () {
     Route::get('/reporter/dashboard', function () {
         return view('dashboard.reporter');
     })->name('reporter.dashboard');

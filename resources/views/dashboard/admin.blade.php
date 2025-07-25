@@ -15,7 +15,7 @@
                     <li class="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer">Report #2</li>
                     <li class="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer">Report #3</li>
                     <li class="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer">Report #4</li>
-                    <li class="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer">Report #5</li>
+                    <li class="p-3 rounded-lg text-white bg-blue-500 hover:bg-blue-200 cursor-pointer">View All Violations</li>
                 </ul>
             </div>
 
@@ -33,7 +33,7 @@
             <!-- Column 3: Chart -->
             <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-center">
                 <h2 class="text-xl font-bold mb-4">Report Status</h2>
-                <div class="w-[250px] h-[250px]">
+                <div class="w-[350px] h-[350px]">
                     <canvas id="reportChart" class="w-full h-full"></canvas>
                 </div>
             </div>

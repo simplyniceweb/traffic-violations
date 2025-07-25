@@ -1,7 +1,7 @@
 <x-app-layout>
-    <x-slot name="header">Provinces</x-slot>
+    <x-slot name="header">Cities and Municipalities</x-slot>
     <div class="mt-5 text-center">
-        <h1 class="text-6xl text-shadow-2xl text-black">List of Provinces</h1>
+        <h1 class="text-6xl text-shadow-2xl text-black">List of Cities and Municipalities</h1>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -14,8 +14,8 @@
 
         <div class="mb-6 flex justify-between items-center flex-wrap gap-4">
             <!-- Left: Create Button -->
-            <a href="{{ route('admin.provinces.create') }}" class="bg-green-500 text-white rounded px-5 py-3 font-bold">
-                Create a Province
+            <a href="{{ route('admin.regions.create') }}" class="bg-green-500 text-white rounded px-5 py-3 font-bold">
+                Create a City or Municipality
             </a>
         </div>
 
@@ -24,34 +24,45 @@
                 <thead class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
                     <tr class="bg-gray-100">
                         <th class="py-2 px-4 border-b">Region</th>
+                        <th class="py-2 px-4 border-b">Province</th>
                         <th class="py-2 px-4 border-b">PSGC Code</th>
                         <th class="py-2 px-4 border-b">Name</th>
-                        <th class="py-2 px-4 border-b">Region Code</th>
+                        <th class="py-2 px-4 border-b">City Code</th>
                         <th class="py-2 px-4 border-b">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($provinces as $province)
-                        <td class="py-2 px-4 border-b">{{ $province->region->region_name ?? 'N/A' }}</td>
-                        <td class="py-2 px-4 border-b">{{ $province->psgc_code }}</td>
-                        <td class="py-2 px-4 border-b">{{ $province->name }}</td>
-                        <td class="py-2 px-4 border-b">{{ $province->province_code }}</td>
+                    @foreach ($cities as $city)
+                    <tr @if($city->trashed()) style="opacity: 0.6;" @endif>
+                        <td class="py-2 px-4 border-b">{{ $city->province->region->region_name ?? 'N/A' }}</td>
+                        <td class="py-2 px-4 border-b">{{ $city->province->province_name ?? 'N/A' }}</td>
+                        <td class="py-2 px-4 border-b">{{ $city->psgc_code }}</td>
+                        <td class="py-2 px-4 border-b">{{ $city->city_name }}</td>
+                        <td class="py-2 px-4 border-b">{{ $city->city_code }}</td>
                         <td class="py-2 px-4 border-b">
                             <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
+                                @if ($city->trashed())
+                                    <form action="{{ route('admin.cities.restore', $city->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" 
+                                        class="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:z-10 focus:outline-none border-l border-white">
+                                        Restore
+                                    </button>
+                                    </form>
+                                @else
                                 <!-- View Button -->
-                                <a href="{{ route('admin.provinces.show', $province->id) }}"
+                                <a href="{{ route('admin.cities.show', $city->id) }}"
                                     class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
                                     View
                                 </a>
 
                                 <!-- Edit Button -->
-                                <a href="{{ route('admin.provinces.edit', $province->id) }}"
+                                <a href="{{ route('admin.cities.edit', $city->id) }}"
                                     class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
                                     Edit
                                 </a>
-
-                                <!-- Delete Button -->
-                                <form action="{{ route('admin.provinces.destroy', $province->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                <form action="{{ route('admin.cities.destroy', $city->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -59,6 +70,7 @@
                                         Delete
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -68,7 +80,7 @@
         </div>
 
         <div class="mt-4">
-            {{ $provinces->links() }}
+            {{ $cities->links() }}
         </div>
     </div>
 </x-app-layout>

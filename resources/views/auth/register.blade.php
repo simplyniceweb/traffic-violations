@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
         @csrf
 
         <!-- Name -->
@@ -46,6 +46,15 @@
                 <option value="reporter">Reporter</option>
                 <option value="officer">Officer</option>
             </select>
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for="photo" :value="__('Valid Identification')" />
+            <input type="file" name="photo" id="photo"
+                    class="w-full p-2 border border-gray-300 rounded" accept="image/*">
+            @error('photo')
+                <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+            @enderror
         </div>
 
         <div class="flex items-center justify-end mt-4">

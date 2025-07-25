@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\ReportAttachment;
 use App\Models\ViolationCategory;
 use App\Models\CitiesMunicipalities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
@@ -26,6 +27,7 @@ class ReportController extends Controller
                 'barangay:id,brgy_name',
                 'user:id,name'
         ])
+        ->where('user_id', Auth::id())
         ->when($status, function ($query) use ($status) {
             $query->where('status', $status);
         })

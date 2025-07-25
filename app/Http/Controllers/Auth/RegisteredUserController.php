@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Storage;
 
 class RegisteredUserController extends Controller
 {
@@ -34,15 +35,27 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', Rule::in(['reporter', 'officer'])], // 👈 validation for role
+            'role' => ['required', Rule::in(['reporter', 'officer'])],
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // 👈 store role
+            'role' => $request->role,
         ]);
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('photos', 'public');
+
+            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+                Storage::disk('public')->delete($user->photo);
+            }
+
+            $user->photo = $path;
+            $user->save();
+        }
 
         event(new Registered($user));
 

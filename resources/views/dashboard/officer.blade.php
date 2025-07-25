@@ -33,7 +33,7 @@
             <!-- Column 3: Chart -->
             <div class="bg-white rounded-2xl shadow p-4 flex flex-col items-center justify-center">
                 <h2 class="text-xl font-bold mb-4">Report Status</h2>
-                <div class="w-[250px] h-[250px]">
+                <div class="w-[350px] h-[350px]">
                     <canvas id="reportChart" class="w-full h-full"></canvas>
                 </div>
             </div>

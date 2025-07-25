@@ -9,6 +9,12 @@ class Barangay extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'brgy_code',
+        'brgy_name',
+        'city_municipality_id',
+    ];
+
     public function cityMunicipality()
     {
         return $this->belongsTo(CitiesMunicipalities::class, 'city_municipality_id');

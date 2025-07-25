@@ -9,6 +9,13 @@ class Province extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'province_name',
+        'psgc_code',
+        'province_code',
+        'region_id',
+    ];
+
     public function region()
     {
         return $this->belongsTo(Region::class);

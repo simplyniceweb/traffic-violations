@@ -9,6 +9,12 @@ class Region extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'region_name',
+        'psgc_code',
+        'region_code',
+    ];
+
     public function provinces()
     {
         return $this->hasMany(Province::class, 'id');

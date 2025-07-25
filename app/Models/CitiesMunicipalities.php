@@ -9,6 +9,13 @@ class CitiesMunicipalities extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'city_code',
+        'city_name',
+        'psgc_code',
+        'province_id',
+    ];
+
     public function province()
     {
         return $this->belongsTo(Province::class);

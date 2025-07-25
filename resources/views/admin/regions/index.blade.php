@@ -31,12 +31,22 @@
                 </thead>
                 <tbody>
                     @foreach ($regions as $region)
-                    <tr>
+                    <tr @if($region->trashed()) style="opacity: 0.6;" @endif>
                         <td class="py-2 px-4 border-b">{{ $region->psgc_code }}</td>
                         <td class="py-2 px-4 border-b">{{ $region->region_name }}</td>
                         <td class="py-2 px-4 border-b">{{ $region->region_code }}</td>
                         <td class="py-2 px-4 border-b">
                             <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
+                                @if ($region->trashed())
+                                    <form action="{{ route('admin.regions.restore', $region->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" 
+                                        class="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:z-10 focus:outline-none border-l border-white">
+                                        Restore
+                                    </button>
+                                    </form>
+                                @else
                                 <!-- View Button -->
                                 <a href="{{ route('admin.regions.show', $region->id) }}"
                                     class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
@@ -48,8 +58,6 @@
                                     class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
                                     Edit
                                 </a>
-
-                                <!-- Delete Button -->
                                 <form action="{{ route('admin.regions.destroy', $region->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                     @csrf
                                     @method('DELETE')
@@ -58,6 +66,7 @@
                                         Delete
                                     </button>
                                 </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
