@@ -4,12 +4,19 @@
         <h1 class="text-2xl font-bold text-gray-800 mb-6">📋 Report Details</h1>
 
 
+        @if ($report->status === 'rejected')
+            <div class="mb-4 p-4 rounded bg-red-100 text-red-800 border border-red-300">
+                <h2 class="font-semibold">Reason for Rejection:</h2>
+                <p>{{ $report->reason }}</p>
+            </div>
+        @else
         <div class="block mb-5 w-full">
             <a href="{{ route('reports.edit', $report->id) }}"
                 class="rounded px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
                 Edit Report
             </a>
         </div>
+        @endif
 
         {{-- Report Info --}}
         <div class="mb-6">

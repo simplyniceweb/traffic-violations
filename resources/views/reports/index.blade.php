@@ -70,27 +70,36 @@
                             </td>
                             <td class="py-2 px-4 border-b">
                                 <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
+                                    @if($report->status === 'rejected')
+                                    <a href=""
+                                        class="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:z-10 focus:outline-none">
+                                        Reason
+                                    </a>
+                                    @endif
+
                                     <!-- View Button -->
                                     <a href="{{ route('reports.show', $report->id) }}"
                                         class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
                                         View
                                     </a>
 
-                                    <!-- Edit Button -->
-                                    <a href="{{ route('reports.edit', $report->id) }}"
-                                        class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
-                                        Edit
-                                    </a>
+                                    @if($report->status === 'pending')
+                                        <!-- Edit Button -->
+                                        <a href="{{ route('reports.edit', $report->id) }}"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
+                                            Edit
+                                        </a>
 
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('reports.destroy', $report->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:z-10 focus:outline-none border-l border-white">
-                                            Delete
-                                        </button>
-                                    </form>
+                                        <!-- Delete Button -->
+                                        <form action="{{ route('reports.destroy', $report->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:z-10 focus:outline-none border-l border-white">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
 
