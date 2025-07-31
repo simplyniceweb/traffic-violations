@@ -48,12 +48,16 @@
                     @foreach($report->attachments as $attachment)
                         <div class="bg-gray-50 p-2 rounded shadow">
                             @if($attachment->type === 'photo')
+                            <a href="{{ asset('storage/' . $attachment->file_path) }}" class="glightbox" data-gallery="attachments" data-width="100%" data-height="auto">
                                 <img src="{{ asset('storage/' . $attachment->file_path) }}" alt="Attachment" class="w-full h-48 object-cover rounded" />
+                            </a>
                             @else
+                            <a href="{{ asset('storage/' . $attachment->file_path) }}" class="glightbox" data-type="video" data-gallery="attachments" data-width="100%" data-height="100vh">
                                 <video controls class="w-full h-48 rounded">
                                     <source src="{{ asset('storage/' . $attachment->file_path) }}" type="video/{{ pathinfo($attachment->file_path, PATHINFO_EXTENSION) }}">
                                     Your browser does not support the video tag.
                                 </video>
+                            </a>
                             @endif
                         </div>
                     @endforeach

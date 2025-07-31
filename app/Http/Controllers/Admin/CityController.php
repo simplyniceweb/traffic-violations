@@ -22,7 +22,8 @@ class CityController extends Controller
     }
 
     public function create() {
-        return view('admin.cities.create');
+        $provinces = Province::all();
+        return view('admin.cities.create', compact('provinces'));
     }
 
     public function store(Request $request) {

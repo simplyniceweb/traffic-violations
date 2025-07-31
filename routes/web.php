@@ -8,15 +8,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RulesController;
 use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\TrafficRulesController;
 use App\Http\Controllers\Admin\BarangayController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\ReportAttachmentController;
-use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+Route::get('/traffic-rules', [TrafficRulesController::class, 'index'])->name('traffic.rules');
 
 Route::get('/provinces/{region}', function ($regionId) {
     return Province::where('region_id', $regionId)->get();
@@ -59,6 +63,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:ad
 
     Route::resource('users', UserController::class);
     Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+
+    Route::resource('rules', RulesController::class);
+    Route::patch('rules/{id}/restore', [RulesController::class, 'restore'])->name('rules.restore');
 
     Route::resource('regions', RegionController::class);
     Route::patch('regions/{id}/restore', [RegionController::class, 'restore'])->name('regions.restore');

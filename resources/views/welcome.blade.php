@@ -29,17 +29,13 @@
                     <nav class="-mx-3 flex flex-1">
                         @auth
                             @php
-                                $user = Auth::user();
-                                
-                                if ($user->role === 'admin') {
-                                    $route = 'admin.dashboard';
-                                } elseif ($user->role === 'reporter') {
-                                    $route = 'reporter.dashboard';
-                                } elseif ($user->role === 'officer') {
-                                    $route = 'officer.dashboard';
-                                } else {
-                                    $route = '/';
-                                }
+                                $user = auth()->user();
+                                $route = match ($user->role) {
+                                    'admin' => 'admin.dashboard',
+                                    'reporter' => 'reporter.dashboard',
+                                    'officer' => 'officer.dashboard',
+                                    default => '/',
+                                };
                             @endphp
                             <a
                                 href="{{ route($route) }}"
@@ -59,6 +55,12 @@
                                 class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Log in
+                            </a>
+                            <a
+                                href="{{ route('traffic.rules') }}"
+                                class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            >
+                                Traffic Rules
                             </a>
 
                             @if (Route::has('register'))

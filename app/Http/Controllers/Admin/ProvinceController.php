@@ -16,6 +16,12 @@ class ProvinceController extends Controller
         return view('admin.provinces.index', ['provinces' => $provinces]);
     }
 
+    public function create()
+    {
+        $regions = Region::all();
+        return view('admin.provinces.create', compact('regions'));
+    }
+
     public function show(Province $province) {
         return view('admin.provinces.show', compact('province'));
     }

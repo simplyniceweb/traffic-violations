@@ -3,15 +3,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             @php
-                $user = Auth::user();
-                if ($user->role === 'admin') {
-                    $route = 'admin.dashboard';
-                } elseif ($user->role === 'reporter') {
-                    $route = 'reporter.dashboard';
-                } elseif ($user->role === 'officer') {
-                    $route = 'officer.dashboard';
-                } else {
-                    $route = '/';
+                $user = auth()->user();
+                $route = 'home';
+                if ($user) {
+                    $route = match ($user->role) {
+                        'admin' => 'admin.dashboard',
+                        'reporter' => 'reporter.dashboard',
+                        'officer' => 'officer.dashboard',
+                        default => '/',
+                    };
                 }
             @endphp
             <div class="flex">
@@ -22,33 +22,40 @@
                     </a>
                 </div>
 
+                @if($user)
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route($route)" :active="request()->routeIs($route)">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @if ($user->role === 'admin')
-                        @include('layouts.admin-nav')
-                    @elseif ($user->role === 'officer')
-                        @include('layouts.officer-nav')
-                    @elseif ($user->role === 'reporter')
-                        @include('layouts.reporter-nav')
+                    @if($user)
+                        @if ($user->role === 'admin')
+                            @include('layouts.admin-nav')
+                        @elseif ($user->role === 'officer')
+                            @include('layouts.officer-nav')
+                        @elseif ($user->role === 'reporter')
+                            @include('layouts.reporter-nav')
+                        @endif
                     @endif
                 </div>
+                @endif
             </div>
 
+            @if($user)
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div>
-                                @if (Auth::user()->photo)
-                                    <img src="{{ asset('storage/' .Auth::user()->photo) }}" class="h-auto sm:w-18 object-contain inline-flex w-6 mr-2" alt="">
-                                @else
-                                    <img src="{{ asset('assets/unisex.png') }}" class="h-auto sm:w-18 object-contain inline-flex w-6 mr-2" alt="">
+                                @if($user)
+                                    @if (Auth::user()->photo)
+                                        <img src="{{ asset('storage/' .Auth::user()->photo) }}" class="h-auto sm:w-18 object-contain inline-flex w-6 mr-2" alt="">
+                                    @else
+                                        <img src="{{ asset('assets/unisex.png') }}" class="h-auto sm:w-18 object-contain inline-flex w-6 mr-2" alt="">
+                                    @endif
+                                    {{ Auth::user()->name }}
                                 @endif
-                                {{ Auth::user()->name }}
                             </div>
 
                             <div class="ms-1">
@@ -87,10 +94,12 @@
                     </svg>
                 </button>
             </div>
+            @endif
         </div>
     </div>
 
     <!-- Responsive Navigation Menu -->
+    @if($user)
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route($route)" :active="request()->routeIs($route)">
@@ -104,8 +113,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ $user->name ?? '' }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ $user->email ?? '' }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
@@ -126,4 +135,5 @@
             </div>
         </div>
     </div>
+    @endif
 </nav>
