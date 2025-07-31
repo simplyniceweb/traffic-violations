@@ -15,14 +15,16 @@
                         </h2>
 
                         @if($rule->photo)
-                            <img src="{{ asset('storage/' . $rule->photo) }}" alt="Rule Photo" class="w-full h-40 object-cover rounded mb-4">
+                            <img src="{{ asset('storage/' . $rule->photo) }}" alt="{{ $rule->rule_name }}" class="glightbox" data-gallery="attachments" data-width="100%" data-height="auto" class="bg-white w-full h-40 object-cover rounded mb-4">
                         @else
                             <div class="h-40 bg-gray-100 flex items-center justify-center text-gray-400 italic rounded mb-4">
                                 No photo
                             </div>
                         @endif
+                        
+                        <hr class="mt-3">
 
-                        <p class="text-gray-700 text-sm">
+                        <p class="text-gray-700 text-sm mt-3">
                             {{ $rule->description ?? 'No description available.' }}
                         </p>
                     </div>
@@ -31,3 +33,10 @@
         @endif
     </div>
 </x-app-layout>
+
+<style>
+.gslide-image img {
+    padding: 10px;
+    background-color: white;
+}
+</style>

@@ -25,7 +25,7 @@
 
             <header x-data="{ open: false }" class="py-6 px-4">
                 <!-- Logo (always centered) -->
-                <div class="flex justify-center">
+                <div class="flex justify-center mt-10 sm:mt-0">
                     <a href="{{ url('/') }}">
                         <img src="{{ asset('assets/pngegg.png') }}" class="block w-24 sm:w-32 md:w-40 h-auto object-contain" alt="Logo">
                     </a>
@@ -63,7 +63,11 @@
                     <nav class="hidden lg:flex justify-center space-x-6 mt-6 text-white">
                         @auth
                             <a href="{{ route($route) }}" class="nav-link me-3 text-shadow-2xl">Dashboard</a>
-                            <a href="{{ route('logout') }}" class="nav-link text-shadow-2xl">Log out</a>
+                            <a href="{{ route('traffic.rules') }}" class="nav-link me-3 text-shadow-2xl">Traffic Rules</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit">Logout</button>
+                            </form>
                         @else
                             <a href="{{ route('login') }}" class="nav-link me-3 text-shadow-2xl">Log in</a>
                             <a href="{{ route('traffic.rules') }}" class="nav-link me-3 text-shadow-2xl">Traffic Rules</a>
@@ -78,7 +82,11 @@
                         <nav class="flex flex-col space-y-2 bg-gray-900 rounded-lg p-4">
                             @auth
                                 <a href="{{ route($route) }}" class="nav-link">Dashboard</a>
-                                <a href="{{ route('logout') }}" class="nav-link">Log out</a>
+                                <a href="{{ route('traffic.rules') }}" class="nav-link me-3 text-shadow-2xl">Traffic Rules</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit">Logout</button>
+                                </form>
                             @else
                                 <a href="{{ route('login') }}" class="nav-link">Log in</a>
                                 <a href="{{ route('traffic.rules') }}" class="nav-link">Traffic Rules</a>
