@@ -19,60 +19,75 @@
             </style>
         @endif
     </head>
-    <body class="min-h-screen font-sans antialiased dark:bg-black dark:text-white/50 bg-cover bg-center overflow-hidden" style="background-image: url('{{ asset('assets/tv-bg.jpg') }}')">
-        <div class="flex flex-col justify-between min-h-screen">
-            <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                <div class="flex lg:justify-center lg:col-start-2">
-                    <a href="{{ url('/')}}"><img src="{{ asset('assets/pngegg.png') }}" class="block w-24 h-auto  object-contain" alt=""></a>
-                </div>
-                @if (Route::has('login'))
-                    <nav class="-mx-3 flex flex-1">
-                        @auth
-                            @php
-                                $user = auth()->user();
-                                $route = match ($user->role) {
-                                    'admin' => 'admin.dashboard',
-                                    'reporter' => 'reporter.dashboard',
-                                    'officer' => 'officer.dashboard',
-                                    default => '/',
-                                };
-                            @endphp
-                            <a
-                                href="{{ route($route) }}"
-                                class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Dashboard
-                            </a>
-                            <a 
-                                href="{{ route('logout') }}"
-                                class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Log out
-                            </a>
-                        @else
-                            <a
-                                href="{{ route('login') }}"
-                                class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Log in
-                            </a>
-                            <a
-                                href="{{ route('traffic.rules') }}"
-                                class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Traffic Rules
-                            </a>
+<body class="relative min-h-screen font-sans antialiased dark:bg-black dark:text-white/80 bg-cover bg-center overflow-hidden" style="background-image: url('{{ asset('assets/tv-bg.jpg') }}')">
+    <div class="absolute inset-0 bg-black/60 z-0"></div>
+        <div class="relative z-10 flex flex-col justify-between min-h-screen">
 
+            <header x-data="{ open: false }" class="py-6 px-4">
+                <!-- Logo (always centered) -->
+                <div class="flex justify-center">
+                    <a href="{{ url('/') }}">
+                        <img src="{{ asset('assets/pngegg.png') }}" class="block w-24 sm:w-32 md:w-40 h-auto object-contain" alt="Logo">
+                    </a>
+                </div>
+
+                <!-- Hamburger Button (only on small screens) -->
+                <div class="flex justify-end lg:hidden mt-4">
+                    <button @click="open = !open" class="text-white focus:outline-none">
+                        <!-- Hamburger Icon -->
+                        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                        </svg>
+                        <!-- Close Icon -->
+                        <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navigation (desktop and mobile) -->
+                @if (Route::has('login'))
+                    @auth
+                        @php
+                            $user = auth()->user();
+                            $route = match ($user->role) {
+                                'admin' => 'admin.dashboard',
+                                'reporter' => 'reporter.dashboard',
+                                'officer' => 'officer.dashboard',
+                                default => '/',
+                            };
+                        @endphp
+                    @endauth
+
+                    <!-- Desktop Menu -->
+                    <nav class="hidden lg:flex justify-center space-x-6 mt-6 text-white">
+                        @auth
+                            <a href="{{ route($route) }}" class="nav-link me-3 text-shadow-2xl">Dashboard</a>
+                            <a href="{{ route('logout') }}" class="nav-link text-shadow-2xl">Log out</a>
+                        @else
+                            <a href="{{ route('login') }}" class="nav-link me-3 text-shadow-2xl">Log in</a>
+                            <a href="{{ route('traffic.rules') }}" class="nav-link me-3 text-shadow-2xl">Traffic Rules</a>
                             @if (Route::has('register'))
-                                <a
-                                    href="{{ route('register') }}"
-                                    class="text-shadow-2xl rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                >
-                                    Register
-                                </a>
+                                <a href="{{ route('register') }}" class="nav-link text-shadow-2xl">Register</a>
                             @endif
                         @endauth
                     </nav>
+
+                    <!-- Mobile Menu -->
+                    <div x-show="open" class="lg:hidden mt-4">
+                        <nav class="flex flex-col space-y-2 bg-gray-900 rounded-lg p-4">
+                            @auth
+                                <a href="{{ route($route) }}" class="nav-link">Dashboard</a>
+                                <a href="{{ route('logout') }}" class="nav-link">Log out</a>
+                            @else
+                                <a href="{{ route('login') }}" class="nav-link">Log in</a>
+                                <a href="{{ route('traffic.rules') }}" class="nav-link">Traffic Rules</a>
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}" class="nav-link">Register</a>
+                                @endif
+                            @endauth
+                        </nav>
+                    </div>
                 @endif
             </header>
 
