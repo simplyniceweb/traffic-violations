@@ -1,9 +1,10 @@
 <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')">
     {{ __('Users') }}
 </x-nav-link>
-<x-nav-link>
+<x-nav-link href="{{ route('admin.violations.index') }}" :active="request()->routeIs('admin.violations.*')">
     {{ __('Violations') }}
-</x-nav-link><x-nav-link href="{{ route('admin.rules.index') }}" :active="request()->routeIs('admin.rules.*')">
+</x-nav-link>
+<x-nav-link href="{{ route('admin.rules.index') }}" :active="request()->routeIs('admin.rules.*')">
     {{ __('Rules') }}
 </x-nav-link>
 @php

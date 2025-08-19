@@ -17,6 +17,9 @@ class Report extends Model
         'barangay_id',
         'description',
         'incident_date',
+        'street',
+        'landmark',
+        'status'
     ];
 
     public function reporter()
@@ -31,7 +34,13 @@ class Report extends Model
 
     public function category()
     {
-        return $this->belongsTo(ViolationCategory::class, 'violation_category_id');
+        // return $this->belongsTo(ViolationCategory::class, 'violation_category_id');
+        return $this->belongsToMany(
+            ViolationCategory::class,   // related model
+            'report_violation',         // pivot table
+            'report_id',                // foreign key on pivot for Report
+            'violation_category_id'     // foreign key on pivot for ViolationCategory
+        );
     }
 
     public function attachments()
@@ -62,7 +71,7 @@ class Report extends Model
     }
 
     public function barangay() {
-        return $this->belongsTo(Barangay::class);
+        return $this->belongsTo(Barangay::class, 'barangay_id');
     }
 
     public function user() {

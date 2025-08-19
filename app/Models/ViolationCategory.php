@@ -8,9 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ViolationCategory extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'violation_categories';
     
     public function reports()
     {
-        return $this->belongsToMany(Report::class, 'report_violation');
+        // return $this->belongsToMany(Report::class, 'report_violation');
+        return $this->belongsToMany(
+            Report::class,
+            'report_violation',
+            'violation_category_id',
+            'report_id'
+        );
     }
 }

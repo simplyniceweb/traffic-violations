@@ -25,7 +25,7 @@
         </div>
 
         <div class="mt-8">
-            <a href="{{ route('admin.provinces.edit', $city->id) }}" 
+            <a href="{{ route('admin.cities.edit', $city->id) }}" 
                 class="mb-5 inline-flex items-center px-4 py-2 text-sm font-medium border text-black bg-green-600 hover:bg-green-700 rounded-md transition duration-200">
                 ✏️ Edit
             </a>

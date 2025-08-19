@@ -47,6 +47,21 @@
             @endif
         </div>
 
+        @if($user->role === 'officer')
+            <div>
+                @if (session('status') === 'phone')
+                    <div class="bg-red-100 border-red-400 p-2 rounded-sm mb-2">
+                        <p class="font-medium text-sm text-red-600 dark:text-red-400">
+                            {{ __('You need to enter your phone number.') }}
+                        </p>
+                    </div>
+                @endif
+                <x-input-label for="phone" :value="__('Phone')" />
+                <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autofocus autocomplete="phone" />
+                <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+            </div>
+        @endif
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

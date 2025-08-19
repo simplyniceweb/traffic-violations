@@ -24,7 +24,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'photo',
-        'role'
+        'role',
+        'on_duty',
+        'last_seen_at',
+        'phone',
+    ];
+
+    protected $casts = [
+        'on_duty' => 'boolean',
+        'last_seen_at' => 'datetime',
     ];
 
     /**

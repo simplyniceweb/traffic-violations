@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ReportViolation extends Model
 {
     use SoftDeletes;
+
+    protected $table = 'report_violation';
 }

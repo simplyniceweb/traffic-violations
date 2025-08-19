@@ -14,7 +14,11 @@ use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\TrafficRulesController;
 use App\Http\Controllers\Admin\BarangayController;
 use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\ViolationController;
 use App\Http\Controllers\ReportAttachmentController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Officer\OfficerDashboardController;
+use App\Http\Controllers\Officer\ViolationController as OfficerViolationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,9 +61,9 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.admin');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('violations', ViolationController::class);
 
     Route::resource('users', UserController::class);
     Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -81,10 +85,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:ad
 });
 
 // Officer routes
-Route::middleware(['auth', 'verified', 'role:officer'])->group(function () {
-    Route::get('/officer/dashboard', function () {
-        return view('dashboard.officer');
-    })->name('officer.dashboard');
+Route::prefix('officer')->name('officer.')->middleware(['auth', 'verified', 'ensure.phone', 'role:officer'])->group(function () {
+    Route::get('/dashboard', [OfficerDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/start-duty', [OfficerDashboardController::class, 'startDuty'])->name('startDuty');
+    Route::post('/dashboard/end-duty', [OfficerDashboardController::class, 'endDuty'])->name('endDuty');
+    Route::post('/dashboard/heartbeat', [OfficerDashboardController::class, 'heartbeat'])->name('heartbeat');
+    Route::resource('violations', OfficerViolationController::class);
 });
 
 // Reporter routes

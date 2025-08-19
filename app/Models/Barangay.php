@@ -9,6 +9,8 @@ class Barangay extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'barangays';
+
     protected $fillable = [
         'brgy_code',
         'brgy_name',

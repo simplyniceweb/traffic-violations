@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $request->user()
         ]);
     }
 
@@ -26,15 +26,38 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $validated = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // ✅ Normalize phone number if present
+        if (!empty($validated['phone'])) {
+            $validated['phone'] = $this->formatPhilippineNumber($validated['phone']);
         }
 
-        $request->user()->save();
+        $user->fill($validated);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    private function formatPhilippineNumber($number): string
+    {
+        $number = preg_replace('/\D/', '', $number); // strip non-digits
+
+        if (substr($number, 0, 2) === '09') {
+            return '+63' . substr($number, 1);
+        }
+
+        if (substr($number, 0, 3) === '639') {
+            return '+' . $number;
+        }
+
+        return $number;
     }
 
     /**
