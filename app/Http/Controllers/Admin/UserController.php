@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Models\CitiesMunicipalities;
 
 class UserController extends Controller
 {
@@ -46,7 +47,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        $cities = CitiesMunicipalities::all();
+        return view('admin.users.edit', compact('user', 'cities'));
     }
 
     public function update(Request $request, User $user)
@@ -57,6 +59,7 @@ class UserController extends Controller
             'password' => 'nullable|min:6',
             'role' => 'required',
             'photo' => 'nullable|image',
+            'city' => 'required|exists:cities_municipalities,id',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -68,6 +71,8 @@ class UserController extends Controller
         } else {
             unset($validated['password']);
         }
+
+        $validated['city_municipality_id'] = $validated['city'];
 
         $user->update($validated);
 

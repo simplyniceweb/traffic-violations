@@ -38,6 +38,14 @@
             @endif
         </div>
 
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-600 mb-2"><i class="fa-solid fa-landmark-flag"></i> Landmark: {{ $report->landmark }}</h2>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-600 mb-2"><i class="fa-solid fa-street-view"></i> Street: {{ $report->street }}</h2>
+        </div>
+
         {{-- Attachments --}}
         <div>
             <h2 class="text-lg font-semibold text-blue-600 mb-4">📎 Attachments</h2>

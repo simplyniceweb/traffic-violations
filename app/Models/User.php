@@ -78,4 +78,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role === 'admin';
     }
+
+    public function city()
+    {
+        return $this->belongsTo(CitiesMunicipalities::class, 'city_municipality_id');
+    }
 }

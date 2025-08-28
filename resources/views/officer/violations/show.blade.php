@@ -79,6 +79,14 @@
                             @break
                     @endswitch
                 </div>
+
+                <div>
+                    <h2 class="text-sm text-gray-600 mb-2"><i class="fa-solid fa-landmark-flag"></i> Landmark: {{ $violation->landmark }}</h2>
+                </div>
+
+                <div>
+                    <h2 class="text-sm text-gray-600 mb-2"><i class="fa-solid fa-street-view"></i> Street: {{ $violation->street }}</h2>
+                </div>
             </div>
 
             <!-- Categories -->

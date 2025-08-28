@@ -55,6 +55,16 @@
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
+            
+            <div>
+                <label for="city" class="block font-medium text-sm text-gray-700">City/Municipality</label>
+                <select id="city" name="city" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full">
+                    <option value="">Select a city/municipality</option>
+                    @foreach ($cities as $city)
+                        <option value="{{ $city->id }}" {{ $user->city->id === $city->id ? 'selected' : '' }}>{{ $city->city_name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             {{-- Photo --}}
             <div>
