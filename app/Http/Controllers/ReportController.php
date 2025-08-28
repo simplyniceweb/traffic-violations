@@ -71,6 +71,8 @@ class ReportController extends Controller
             'barangay_id' => $request->barangay_id,
             'description' => $request->description,
             'incident_date' => Carbon::parse(str_replace('T', ' ', $request->datetime)),
+            'street' => $request->street,
+            'landmark' => $request->landmark
         ]);
 
         // Attach the violation type to the report
@@ -183,6 +185,8 @@ class ReportController extends Controller
             'province_id' => $request->province_id,
             'city_municipality_id' => $request->city_municipality_id,
             'barangay_id' => $request->barangay_id,
+            'street' => $request->street,
+            'landmark' => $request->landmark
         ]);
 
         // Sync violations
