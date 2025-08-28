@@ -65,6 +65,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:ad
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('violations', ViolationController::class);
+    Route::patch('admin/{id}/restore', [UserController::class, 'restore'])->name('restore');
 
     Route::resource('users', UserController::class);
     Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -94,7 +95,7 @@ Route::prefix('officer')->name('officer.')->middleware(['auth', 'verified', 'ens
     Route::post('/dashboard/end-duty', [OfficerDashboardController::class, 'endDuty'])->name('endDuty');
     Route::post('/dashboard/heartbeat', [OfficerDashboardController::class, 'heartbeat'])->name('heartbeat');
     Route::resource('violations', OfficerViolationController::class);
-    Route::post('/violations/restore', [OfficerViolationController::class, 'restore'])->name('restore');
+    Route::post('/violations/{id}/restore', [OfficerViolationController::class, 'restore'])->name('restore');
 });
 
 // Reporter routes
