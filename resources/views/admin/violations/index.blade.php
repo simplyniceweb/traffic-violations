@@ -72,7 +72,7 @@
                             <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
                             <div class="hidden">
                                 @if ($violation->trashed())
-                                    <form action="{{ route('admin.restore', $violation->id) }}" method="POST" class="inline">
+                                    <form action="{{ route('admin.violations.restore', $violation->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" 
@@ -92,10 +92,14 @@
                                 </form>
                                 @endif
                             </div>
+                            @if (!$violation->trashed())
                             <a href="{{ route('admin.violations.show', $violation->id) }}"
                                 class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none">
                                 <i class="fa-solid fa-eye"></i> View
                             </a>
+                            @else
+                            <span class="bg-gray p-2">No Action Available</span>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

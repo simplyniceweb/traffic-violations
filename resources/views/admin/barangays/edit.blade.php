@@ -1,5 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">Edit Barangay</x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <h2 class="text-2xl font-bold mb-6">Edit Barangay</h2>

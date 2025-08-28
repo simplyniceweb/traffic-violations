@@ -70,11 +70,24 @@
                             @endswitch
                         </td>
                         <td class="py-2 px-4 border-b">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-gray-700">Off</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" value="" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer dark:bg-gray-700 
+                                                peer-checked:after:translate-x-full peer-checked:after:border-white 
+                                                after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
+                                                after:bg-white after:border-gray-300 after:border after:rounded-full 
+                                                after:h-5 after:w-5 after:transition-all 
+                                                peer-checked:bg-blue-600"></div>
+                                </label>
+                            <span class="text-gray-700">On</span>
+                            </div>
                         </td>
                         <td class="py-2 px-4 border-b">
                             <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
                                 @if ($violation->trashed())
-                                    <form action="{{ route('officer.restore', $violation->id) }}" method="POST" class="inline">
+                                    <form class="hidden" action="{{ route('officer.violations.restore', $violation->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" 
@@ -82,6 +95,7 @@
                                         Restore
                                     </button>
                                     </form>
+                                    <span class="bg-gray p-2">No Action Available</span>
                                 @else
                                 <a href="{{ route('officer.violations.show', $violation->id) }}"
                                     class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:z-10 focus:outline-none border-l border-white">

@@ -28,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'on_duty',
         'last_seen_at',
         'phone',
+        'city_municipality_id'
     ];
 
     protected $casts = [

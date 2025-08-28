@@ -10,8 +10,16 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = ViolationCategory::all();
+        $categories = ViolationCategory::withTrashed()
+            ->orderBy('deleted_at', 'desc')
+            ->paginate(10);
+
         return view('admin.categories.index', compact('categories'));
+    }
+
+    public function show(ViolationCategory $category)
+    {
+        return view('admin.categories.show', compact('category'));
     }
 
     public function create()

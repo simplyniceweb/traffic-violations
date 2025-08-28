@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\CitiesMunicipalities;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $cities = CitiesMunicipalities::all();
+        return view('auth.register', compact('cities'));
     }
 
     /**
@@ -35,15 +37,17 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', Rule::in(['reporter', 'officer'])],
+            // 'role' => ['required', Rule::in(['reporter', 'officer'])],
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'city' => 'required|exists:cities_municipalities,id',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'city_municipality_id' => $request->city,
+            // 'role' => $request->role,
         ]);
 
         if ($request->hasFile('photo')) {

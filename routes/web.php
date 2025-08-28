@@ -64,8 +64,11 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('categories', CategoryController::class);
+    Route::patch('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+
     Route::resource('violations', ViolationController::class);
-    Route::patch('admin/{id}/restore', [UserController::class, 'restore'])->name('restore');
+    Route::patch('violations/{id}/restore', [ViolationController::class, 'restore'])->name('violations.restore');
 
     Route::resource('users', UserController::class);
     Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
@@ -84,8 +87,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:ad
 
     Route::resource('barangays', BarangayController::class);
     Route::patch('barangays/{id}/restore', [BarangayController::class, 'restore'])->name('barangays.restore');
-
-    Route::resource('categories', CategoryController::class);
 });
 
 // Officer routes
@@ -95,7 +96,7 @@ Route::prefix('officer')->name('officer.')->middleware(['auth', 'verified', 'ens
     Route::post('/dashboard/end-duty', [OfficerDashboardController::class, 'endDuty'])->name('endDuty');
     Route::post('/dashboard/heartbeat', [OfficerDashboardController::class, 'heartbeat'])->name('heartbeat');
     Route::resource('violations', OfficerViolationController::class);
-    Route::post('/violations/{id}/restore', [OfficerViolationController::class, 'restore'])->name('restore');
+    Route::post('/violations/{id}/restore', [OfficerViolationController::class, 'restore'])->name('violations.restore');
 });
 
 // Reporter routes
