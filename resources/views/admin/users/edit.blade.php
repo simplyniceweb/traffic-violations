@@ -61,7 +61,7 @@
                 <select id="city" name="city" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full">
                     <option value="">Select a city/municipality</option>
                     @foreach ($cities as $city)
-                        <option value="{{ $city->id }}" {{ $user->city && $user->city->id === $city->id ? 'selected' : '' }}>{{ $city->city_name }}</option>
+                        <option value="{{ $city->id }}" {{ $user->city && $user->city->id === $city->id ? 'selected' : '' }}>{{ $city->city_name }} - {{ $city->province->province_name }}</option>
                     @endforeach
                 </select>
             </div>
