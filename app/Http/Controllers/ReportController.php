@@ -59,6 +59,8 @@ class ReportController extends Controller
             'datetime' => 'required|date',
             'evidence' => 'nullable|array',
             'evidence.*' => 'file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
+            'street' => 'nullable|string',
+            'landmark' => 'nullable|string',
         ]);
 
         $report = Report::create([
@@ -164,6 +166,8 @@ class ReportController extends Controller
             'violation_type.*' => 'exists:violation_categories,id',
             'evidence' => 'nullable|array',
             'evidence.*' => 'file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
+            'street' => 'nullable|string',
+            'landmark' => 'nullable|string',
         ]);
 
         $report = Report::with('attachments')->findOrFail($id);

@@ -74,7 +74,7 @@
                         <td class="py-2 px-4 border-b">
                             <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
                                 @if ($violation->trashed())
-                                    <form action="{{ route('officer.violations.restore', $violation->id) }}" method="POST" class="inline">
+                                    <form action="{{ route('officer.restore', $violation->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" 
