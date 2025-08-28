@@ -10,6 +10,11 @@ class ViolationCategory extends Model
     use SoftDeletes;
 
     protected $table = 'violation_categories';
+
+    protected $fillable = [
+        'name',
+        'type',
+    ];
     
     public function reports()
     {

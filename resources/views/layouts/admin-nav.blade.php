@@ -7,6 +7,9 @@
 <x-nav-link href="{{ route('admin.rules.index') }}" :active="request()->routeIs('admin.rules.*')">
     {{ __('Rules') }}
 </x-nav-link>
+<x-nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">
+    {{ __('Violation Categories') }}
+</x-nav-link>
 @php
     $isLocalInfoActive = request()->routeIs([
         'admin.regions.*',

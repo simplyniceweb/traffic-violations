@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\ViolationController;
 use App\Http\Controllers\ReportAttachmentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
 use App\Http\Controllers\Officer\ViolationController as OfficerViolationController;
 
@@ -82,6 +83,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:ad
 
     Route::resource('barangays', BarangayController::class);
     Route::patch('barangays/{id}/restore', [BarangayController::class, 'restore'])->name('barangays.restore');
+
+    Route::resource('categories', CategoryController::class);
 });
 
 // Officer routes

@@ -2,7 +2,7 @@
     <x-slot name="header">Officer Dashboard</x-slot>
     <div class="mt-5 text-center">
         <h1 class="text-6xl text-shadow-2xl text-black">Welcome, officer!</h1>
-        <div class="float-end mt-5">
+        <div class="mt-5">
             @if(auth()->user()?->on_duty)
                 <form method="POST" action="{{ route('officer.endDuty') }}">
                     @csrf

@@ -72,7 +72,7 @@
                             <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
                             <div class="hidden">
                                 @if ($violation->trashed())
-                                    <form action="{{ route('admin.violations.restore', $violation->id) }}" method="POST" class="inline">
+                                    <form action="{{ route('admin.restore', $violation->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('PATCH')
                                         <button type="submit" 
