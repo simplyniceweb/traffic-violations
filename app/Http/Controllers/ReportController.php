@@ -18,12 +18,10 @@ class ReportController extends Controller
 {
     public function dashboard()
     {
-        $violations_count = Report::where('city_municipality_id', Auth::user()->city_municipality_id)
-            ->where('user_id', Auth::id())
+        $violations_count = Report::where('user_id', Auth::id())
             ->count();
 
         $violations = Report::with('reporter', 'officer', 'category', 'barangay')
-            ->where('city_municipality_id', Auth::user()->city_municipality_id)
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -35,7 +33,6 @@ class ReportController extends Controller
                 SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected,
                 SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved
             ")
-        ->where('city_municipality_id', Auth::user()->city_municipality_id)
         ->where('user_id', Auth::id())
         ->first();
 
