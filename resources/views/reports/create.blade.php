@@ -84,11 +84,11 @@
                 </div>
                 <div class="mb-4">
                     <label class="block font-semibold">Street</label>
-                    <input type="text" name="" id="" class="w-full border p-2 rounded text-black">
+                    <input type="text" name="street" id="street" class="w-full border p-2 rounded text-black">
                 </div>
                 <div class="mb-4">
                     <label class="block font-semibold">Landmark</label>
-                    <input type="text" name="" id="" class="w-full border p-2 rounded text-black">
+                    <input type="text" name="landmark" id="landmark" class="w-full border p-2 rounded text-black">
                 </div>
             </div>
 
