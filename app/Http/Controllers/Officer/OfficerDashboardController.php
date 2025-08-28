@@ -14,6 +14,7 @@ class OfficerDashboardController extends Controller
         $violations_count = Report::count();
 
         $violations = Report::with('reporter', 'officer', 'category', 'barangay')
+            ->where('city_municipality_id', Auth::user()->city_municipality_id)
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();

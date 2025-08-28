@@ -10,14 +10,15 @@ use Illuminate\Http\Request;
 use App\Models\ViolationCategory;
 use App\Http\Controllers\Controller;
 use App\Models\CitiesMunicipalities;
+use Illuminate\Support\Facades\Auth;
 
 class ViolationController extends Controller
 {
     public function index()
     {
         $violations = Report::with('reporter', 'officer', 'category', 'barangay')
+            ->where('city_municipality_id', Auth::user()->city_municipality_id)
             ->orderBy('created_at', 'desc')
-            ->withTrashed()
             ->get();
 
         return view('officer.violations.index', compact('violations'));
