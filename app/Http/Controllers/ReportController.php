@@ -16,6 +16,32 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
+    public function dashboard()
+    {
+        $violations_count = Report::where('city_municipality_id', Auth::user()->city_municipality_id)
+            ->where('user_id', Auth::id())
+            ->count();
+
+        $violations = Report::with('reporter', 'officer', 'category', 'barangay')
+            ->where('city_municipality_id', Auth::user()->city_municipality_id)
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        $reportCounts = Report::selectRaw("
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN status = 'under_review' THEN 1 ELSE 0 END) as under_review,
+                SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected,
+                SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved
+            ")
+        ->where('city_municipality_id', Auth::user()->city_municipality_id)
+        ->where('user_id', Auth::id())
+        ->first();
+
+        return view('dashboard.reporter', compact('violations_count', 'violations', 'reportCounts'));
+    }
+
     public function index(Request $request)
     {
         $status = $request->query('status');

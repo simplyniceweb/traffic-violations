@@ -101,9 +101,11 @@ Route::prefix('officer')->name('officer.')->middleware(['auth', 'verified', 'ens
 
 // Reporter routes
 Route::middleware(['auth', 'verified', 'role:reporter'])->group(function () {
-    Route::get('/reporter/dashboard', function () {
-        return view('dashboard.reporter');
-    })->name('reporter.dashboard');
+    // Route::get('/reporter/dashboard', function () {
+    //     return view('dashboard.reporter');
+    // })->name('reporter.dashboard');
+
+    Route::get('/reporter/dashboard', [ReportController::class, 'dashboard'])->name('reporter.dashboard');
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/create', [ReportController::class, 'create'])->name('reports.create');

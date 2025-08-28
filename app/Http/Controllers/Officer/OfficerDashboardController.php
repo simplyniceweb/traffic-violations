@@ -24,7 +24,10 @@ class OfficerDashboardController extends Controller
                 SUM(CASE WHEN status = 'under_review' THEN 1 ELSE 0 END) as under_review,
                 SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected,
                 SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved
-            ")->first();
+            ")
+            ->where('city_municipality_id', Auth::user()->city_municipality_id)
+            ->where('user_id', Auth::id())
+            ->first();
 
         return view('dashboard.officer', [
             'violations_count' => $violations_count,
