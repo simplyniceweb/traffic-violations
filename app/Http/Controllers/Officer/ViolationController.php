@@ -107,4 +107,8 @@ class ViolationController extends Controller
         return redirect()->route('officer.violations.index')
             ->with('success', 'Violation deleted successfully.');
     }
+
+    public function restore()
+    {
+    }
 }
