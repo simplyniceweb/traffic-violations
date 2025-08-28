@@ -112,4 +112,29 @@ class ViolationController extends Controller
     public function restore()
     {
     }
+
+    public function status(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|string|in:pending,under_review,resolved,rejected',
+        ]);
+
+        $report = Report::findOrFail($id);
+
+        if ($report->trashed()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot update status of a deleted report.'
+            ], 400);
+        }
+
+        $report->status = $request->status;
+        $report->officer_id = Auth::id();
+        $report->save();
+
+        return response()->json([
+            'success' => true,
+            'status' => $report->status
+        ]);
+    }
 }

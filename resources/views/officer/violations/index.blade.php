@@ -42,7 +42,7 @@
                             @if($remaining > 0) +{{ $remaining }} more @endif
                         </td>
                         <td class="py-2 px-4 border-b">{{ $violation->barangay?->brgy_name }}</td>
-                        <td class="py-2 px-4 border-b">
+                        <td class="py-2 px-4 border-b report-status-{{ $violation->id }}">
                             @switch($violation->status)
                                 @case('pending')
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -73,7 +73,11 @@
                             <div class="flex items-center space-x-3">
                                 <span class="text-gray-700">Off</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" value="" class="sr-only peer">
+                                    <input 
+                                        type="checkbox" 
+                                        class="sr-only peer toggle-status"
+                                        data-id="{{ $violation->id }}"
+                                        {{ $violation->officer_id === Auth::id() ? 'checked' : '' }}>
                                     <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer dark:bg-gray-700 
                                                 peer-checked:after:translate-x-full peer-checked:after:border-white 
                                                 after:content-[''] after:absolute after:top-[2px] after:left-[2px] 
@@ -81,7 +85,7 @@
                                                 after:h-5 after:w-5 after:transition-all 
                                                 peer-checked:bg-blue-600"></div>
                                 </label>
-                            <span class="text-gray-700">On</span>
+                                <span class="text-gray-700">On</span>
                             </div>
                         </td>
                         <td class="py-2 px-4 border-b">
@@ -115,3 +119,40 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+$(document).on('change', '.toggle-status', function() {
+    let reportId = $(this).data('id');
+    let status = $(this).is(':checked') ? 'under_review' : 'pending';
+
+    $.ajax({
+        url: '/officer/violations/status/' + reportId,
+        type: 'POST',
+        data: {
+            status: status,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            console.log('Updated:', response);
+
+            let row = $('input[data-id="'+reportId+'"]').closest('tr');
+            let badgeCell = row.find('td.report-status-'+reportId);
+
+            let badgeHtml = '';
+            switch (response.status) {
+                case 'pending':
+                    badgeHtml = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>';
+                    break;
+                case 'under_review':
+                    badgeHtml = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Under Review</span>';
+                    break;
+            }
+
+            badgeCell.html(badgeHtml);
+        },
+        error: function(xhr) {
+            console.error('Error:', xhr.responseText);
+        }
+    });
+});
+</script>

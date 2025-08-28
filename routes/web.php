@@ -97,6 +97,7 @@ Route::prefix('officer')->name('officer.')->middleware(['auth', 'verified', 'ens
     Route::post('/dashboard/heartbeat', [OfficerDashboardController::class, 'heartbeat'])->name('heartbeat');
     Route::resource('violations', OfficerViolationController::class);
     Route::post('/violations/{id}/restore', [OfficerViolationController::class, 'restore'])->name('violations.restore');
+    Route::post('/violations/status/{id}', [OfficerViolationController::class, 'status'])->name('violations.status');
 });
 
 // Reporter routes
