@@ -13,7 +13,8 @@ $availableOfficers = User::where('role', 'officer')
 
 
 1. Viewing of users
-2. Different login for officers
+2. Different login for officers with invitation code
+    2.1 http://127.0.0.1:8000/login/officer?invitationcode=123456
 3. Home navigation
 4. Warning reporter
     4.1 Warning description
