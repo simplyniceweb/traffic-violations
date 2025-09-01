@@ -2,6 +2,8 @@
     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
         @csrf
 
+        <input type="hidden" name="invitation" value="{{ $inviteCode }}">
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />

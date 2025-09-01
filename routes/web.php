@@ -7,17 +7,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
+use Symfony\Component\HttpFoundation\Request;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\Admin\RulesController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\TrafficRulesController;
 use App\Http\Controllers\Admin\BarangayController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\ViolationController;
 use App\Http\Controllers\ReportAttachmentController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
 use App\Http\Controllers\Officer\ViolationController as OfficerViolationController;
 
@@ -63,6 +65,7 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/invitations', [InvitationController::class, 'index'])->name('invitations.index');
 
     Route::resource('categories', CategoryController::class);
     Route::patch('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
@@ -98,6 +101,9 @@ Route::prefix('officer')->name('officer.')->middleware(['auth', 'verified', 'ens
     Route::resource('violations', OfficerViolationController::class);
     Route::post('/violations/{id}/restore', [OfficerViolationController::class, 'restore'])->name('violations.restore');
     Route::post('/violations/status/{id}', [OfficerViolationController::class, 'status'])->name('violations.status');
+
+    Route::post('/users/{user}/ban', [OfficerDashboardController::class, 'ban'])->name('users.ban');
+    Route::post('/users/{user}/unban', [OfficerDashboardController::class, 'unban'])->name('users.unban');
 });
 
 // Reporter routes

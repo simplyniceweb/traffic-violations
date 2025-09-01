@@ -3,6 +3,10 @@
     <div class="mt-5 text-center">
         <h1 class="text-6xl text-shadow-2xl text-black">Welcome, administrator!</h1>
 
+        <div class="w-full text-center">
+            <button class="bg-green-500 text-white px-4 py-2 rounded-lg mt-5 generate-invite"><i class="fa-solid fa-link"></i> Generate Invitation</button>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6 bg-gray-100">
             <!-- Column 1: Reports -->
             <div class="bg-white rounded-2xl shadow p-4">
@@ -87,6 +91,38 @@
                         }
                     }
                 }
+            }
+        });
+    });
+
+    $(document).on('click', '.generate-invite', function() {
+        const button = $(this);
+        const location = window.location.origin;
+        button.prop('disabled', true).text('Generating...');
+
+        $.ajax({
+            url: '{{ route('admin.invitations.index') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+            },
+            success: function(response) {
+                button.prop('disabled', false).text('Generate Invitation');
+                if (response.code) {
+                    const code = location+'/register?invitation='+response.code;
+                    navigator.clipboard.writeText(code).then(function() {
+                        alert('Invitation code copied to clipboard: ' + code);
+                    }).catch(function(err) {
+                        console.error('Could not copy text: ', err);
+                        alert('Invitation code: ' + response.code);
+                    });
+                } else {
+                    alert('No invitation code returned.');
+                }
+            },
+            error: function(xhr) {
+                button.prop('disabled', false).text('Generate Invitation');
+                alert('An error occurred. Please try again.');
             }
         });
     });

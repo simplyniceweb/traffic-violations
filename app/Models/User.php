@@ -28,7 +28,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'on_duty',
         'last_seen_at',
         'phone',
-        'city_municipality_id'
+        'city_municipality_id',
+        'is_banned',
+        'banned_reason'
     ];
 
     protected $casts = [
@@ -82,5 +84,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function city()
     {
         return $this->belongsTo(CitiesMunicipalities::class, 'city_municipality_id');
+    }
+
+    public function isBanned(): bool
+    {
+        return $this->is_banned;
     }
 }

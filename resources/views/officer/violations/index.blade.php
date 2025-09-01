@@ -12,6 +12,12 @@
             </div>
         @endif
 
+        @if(session('status'))
+            <div class="mb-4 p-4 bg-indigo-100 text-indigo-700 rounded">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded">
             <table class="w-full text-sm text-left text-gray-700 dark:text-gray-200">
                 <thead class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
@@ -110,6 +116,23 @@
                                     Edit
                                 </a>
                                 @endif
+                                @if(!$violation->reporter->is_banned)
+                                    <button 
+                                        id="openBanModal" 
+                                        class="bg-red-600 text-white px-4 py-2 text-sm font-medium hover:bg-red-700 focus:z-10 focus:outline-none rounded-none border-l border-white">
+                                        Ban User
+                                    </button>
+
+                                    @include('officer.violations.ban', ['user' => $violation->reporter] )
+                                @else
+                                    <form method="POST" action="{{ route('officer.users.unban', $violation->reporter) }}">
+                                        @csrf
+                                        <button type="submit" 
+                                            class="px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 focus:z-10 focus:outline-none rounded-none border-l border-white">
+                                            <i class="fa-solid fa-heart"></i> Unban User
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -121,6 +144,22 @@
 </x-app-layout>
 
 <script>
+$(document).ready(function () {
+    $("#openBanModal").on("click", function () {
+        $("#banModal").fadeIn();
+    });
+
+    $("#closeBanModal").on("click", function () {
+        $("#banModal").fadeOut();
+    });
+
+    // Also close modal if clicking outside modal box
+    $("#banModal").on("click", function (e) {
+        if ($(e.target).is("#banModal")) {
+            $(this).fadeOut();
+        }
+    });
+});
 $(document).on('change', '.toggle-status', function() {
     let reportId = $(this).data('id');
     let status = $(this).is(':checked') ? 'under_review' : 'pending';

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Officer;
 
+use App\Models\User;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -65,5 +66,29 @@ class OfficerDashboardController extends Controller
         }
 
         return response()->json(['status' => 'ok']);
+    }
+    
+    public function ban(User $user, Request $request)
+    {
+        $request->validate([
+            'ban_reason' => 'required|string|max:1000',
+        ]);
+
+        $user->update([
+            'is_banned' => 1,
+            'banned_reason' => $request->ban_reason,
+        ]);
+
+        return back()->with('status', 'User has been banned.');
+    }
+
+    public function unban(User $user)
+    {
+        $user->update([
+            'is_banned' => 0,
+            'banned_reason' => null,
+        ]);
+
+        return back()->with('status', 'User has been unbanned.');
     }
 }

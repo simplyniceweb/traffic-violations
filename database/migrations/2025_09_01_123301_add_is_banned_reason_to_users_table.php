@@ -12,11 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            if (!Schema::hasColumn('users', 'city_municipality_id')) {
-                $table->foreignId('city_municipality_id')
-                      ->constrained('cities_municipalities')
-                      ->onDelete('cascade');
-            }
+            $table->text('banned_reason')->nullable();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

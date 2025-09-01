@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\LoginRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,7 +23,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): Response|RedirectResponse
     {
         $request->validate([
             'email' => 'required|email',
@@ -36,6 +37,15 @@ class AuthenticatedSessionController extends Controller
         }
 
         $request->session()->regenerate();
+        if (Auth::user()->is_banned) {
+            $reason = Auth::user()->banned_reason ?? 'No reason specified.';
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            // Option 1: Show banned page
+             return response()->view('errors.banned', ['reason' => $reason], 403);
+        }
 
         $role = Auth::user()->role;
 

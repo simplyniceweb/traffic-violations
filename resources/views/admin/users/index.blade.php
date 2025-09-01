@@ -40,6 +40,10 @@
                                 </button>
                                 </form>
                             @else
+                            <a href="{{ route('admin.users.show', $user->id) }}"
+                                class="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:z-10 focus:outline-none border-l border-white">
+                                View
+                            </a>
                             <a href="{{ route('admin.users.edit', $user->id) }}"
                                 class="px-4 py-2 text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600 focus:z-10 focus:outline-none border-l border-white">
                                 Edit
