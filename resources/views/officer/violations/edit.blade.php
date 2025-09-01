@@ -96,6 +96,11 @@
             </div>
 
             <div class="mb-4">
+                <label for="reason">Reason</label>
+                <textarea name="reason" id="reason" class="w-full border p-2 rounded">{{ old('reason', $report->reason) }}</textarea>
+            </div>
+
+            <div class="mb-4">
                 <label for="description" class="block font-semibold">Description</label>
                 <textarea name="description" id="description" class="w-full border p-2 rounded">{{ old('description', $report->description) }}</textarea>
             </div>

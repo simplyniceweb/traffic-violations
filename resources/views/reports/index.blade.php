@@ -70,12 +70,6 @@
                             </td>
                             <td class="py-2 px-4 border-b">
                                 <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
-                                    @if($report->status === 'rejected')
-                                    <a href=""
-                                        class="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 focus:z-10 focus:outline-none">
-                                        Reason
-                                    </a>
-                                    @endif
 
                                     <!-- View Button -->
                                     <a href="{{ route('reports.show', $report->id) }}"

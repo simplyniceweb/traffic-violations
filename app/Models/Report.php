@@ -19,7 +19,8 @@ class Report extends Model
         'incident_date',
         'street',
         'landmark',
-        'status'
+        'status',
+        'reason'
     ];
 
     public function reporter()
