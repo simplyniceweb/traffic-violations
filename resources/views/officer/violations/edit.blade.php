@@ -88,8 +88,8 @@
             <div class="mb-4">
                 <label for="status" class="block font-semibold">Status</label>
                 <select name="status" id="status" class="w-full border p-2 rounded">
-                    <option value="pending" {{ $report->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="under_review" {{ $report->status === 'under_review' ? 'selected' : '' }}>Under Review</option>
+                    {{-- <option value="pending" {{ $report->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="under_review" {{ $report->status === 'under_review' ? 'selected' : '' }}>Under Review</option> --}}
                     <option value="rejected" {{ $report->status === 'rejected' ? 'selected' : '' }}>Rejected</option>
                     <option value="resolved" {{ $report->status === 'resolved' ? 'selected' : '' }}>Resolved</option>
                 </select>
