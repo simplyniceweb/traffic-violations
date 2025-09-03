@@ -29,8 +29,8 @@
                             </a>
                         </li>
                     @endforeach
-                    <li class="p-3 rounded-lg text-white bg-blue-500 hover:bg-blue-200 cursor-pointer">
-                        <a href="{{ route('reports.index') }}">View All Reported Violations</a>
+                    <li>
+                        <a href="{{ route('reports.index') }}" class="block p-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition">View All Reported Violations</a>
                     </li>
                 </ul>
             </div>

@@ -9,9 +9,9 @@
 
             <div class="mb-4">
                 <label for="incident_date" class="block font-semibold">Incident Date</label>
-                <input type="datetime-local" name="incident_date" id="incident_date"
+                <input type="datetime-local" name="incident_date" readonly id="incident_date"
                     value="{{ old('incident_date', $report->incident_date ? date('Y-m-d\TH:i', strtotime($report->incident_date)) : '') }}"
-                    class="w-full border p-2 rounded">
+                    class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
             </div>
 
 
@@ -26,7 +26,7 @@
                 <!-- Region -->
                 <div class="mb-4">
                     <label class="block font-semibold">Region</label>
-                    <select name="region_id" x-model="selectedRegion" @change="loadProvinces()" class="w-full border p-2 rounded text-black">
+                    <select name="region_id" x-model="selectedRegion" @change="loadProvinces()" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
                         <option value="">Select Region</option>
                         @foreach ($regions as $region)
                             <option value="{{ $region->id }}"  {{ $report->region_id == $region->id ? 'selected' : '' }}>{{ $region->region_name }}</option>
@@ -37,10 +37,10 @@
                 <!-- Province -->
                 <div class="mb-4">
                     <label class="block font-semibold">Province</label>
-                    <select name="province_id" x-model="selectedProvince" @change="loadCities()" class="w-full border p-2 rounded text-black">
+                    <select name="province_id" x-model="selectedProvince" @change="loadCities()" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
                         <option value="">Select Province</option>
                         <template x-if="isLoadingProvinces">
-                            <option disabled>Loading...</option>
+                            <option readonly>Loading...</option>
                         </template>
                         <template x-for="province in provinces" :key="province.id">
                             <option :value="province.id" x-text="province.province_name"></option>
@@ -51,10 +51,10 @@
                 <!-- City -->
                 <div class="mb-4">
                     <label class="block font-semibold">City</label>
-                    <select name="city_municipality_id" x-model="selectedCity" @change="loadBarangays()" class="w-full border p-2 rounded text-black">
+                    <select name="city_municipality_id" x-model="selectedCity" @change="loadBarangays()" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
                         <option value="">Select City</option>
                         <template x-if="isLoadingCities">
-                            <option disabled>Loading...</option>
+                            <option readonly>Loading...</option>
                         </template>
                         <template x-for="city in cities" :key="city.id">
                             <option :value="city.id" x-text="city.city_name"></option>
@@ -65,10 +65,10 @@
                 <!-- Barangay -->
                 <div class="mb-4">
                     <label class="block font-semibold">Barangay</label>
-                    <select name="barangay_id" x-model="selectedBarangay" class="w-full border p-2 rounded text-black">
+                    <select name="barangay_id" x-model="selectedBarangay" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
                         <option value="">Select Barangay</option>
                         <template x-if="isLoadingBarangays">
-                            <option disabled>Loading...</option>
+                            <option readonly>Loading...</option>
                         </template>
                         <template x-for="barangay in barangays" :key="barangay.id">
                             <option :value="barangay.id" x-text="barangay.brgy_name"></option>
@@ -77,11 +77,11 @@
                 </div>
                 <div class="mb-4">
                     <label class="block font-semibold">Street</label>
-                    <input type="text" name="street" id="street" value="{{ old('street', $report->street) }}" class="w-full border p-2 rounded text-black">
+                    <input type="text" name="street" id="street" value="{{ old('street', $report->street) }}" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
                 </div>
                 <div class="mb-4">
                     <label class="block font-semibold">Landmark</label>
-                    <input type="text" name="landmark" id="landmark" value="{{ old('landmark', $report->landmark) }}" class="w-full border p-2 rounded text-black">
+                    <input type="text" name="landmark" id="landmark" value="{{ old('landmark', $report->landmark) }}" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
                 </div>
             </div>
 
@@ -102,12 +102,12 @@
 
             <div class="mb-4">
                 <label for="description" class="block font-semibold">Description</label>
-                <textarea name="description" id="description" class="w-full border p-2 rounded">{{ old('description', $report->description) }}</textarea>
+                <textarea name="description" id="description" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">{{ old('description', $report->description) }}</textarea>
             </div>
 
             <div class="mb-4">
                 <label for="violation_type" class="block font-semibold">Violation Types</label>
-                <select name="violation_type[]" id="violation_type" class="w-full border p-2 rounded select2" multiple>
+                <select name="violation_type[]" id="violation_type" readonly class="w-full border p-2 rounded select2 text-gray-500 bg-gray-100 cursor-not-allowed" multiple>
                     @foreach ($violations as $violation)
                         <option value="{{ $violation->id }}" 
                             {{ $report->violations->contains($violation->id) ? 'selected' : '' }}>
@@ -119,8 +119,8 @@
 
             <div class="mb-4">
                 <label for="evidence" class="block font-semibold">Upload Additional Evidence</label>
-                <input type="file" name="evidence[]" id="evidence" multiple
-                    accept=".jpg,.jpeg,.png,.mp4,.mov,.avi" class="w-full border p-2 rounded">
+                <input type="file" name="evidence[]" readonly id="evidence" multiple
+                    accept=".jpg,.jpeg,.png,.mp4,.mov,.avi" class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">
             </div>
 
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Update Report</button>

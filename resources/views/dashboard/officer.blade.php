@@ -40,8 +40,8 @@
                             </a>
                         </li>
                     @endforeach
-                    <li class="p-3 rounded-lg text-white bg-blue-500 hover:bg-blue-200 cursor-pointer">
-                        <a href="{{ route('officer.violations.index') }}">View All Violations</a>
+                    <li>
+                        <a class="block p-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition" href="{{ route('officer.violations.index') }}">View All Violations</a>
                     </li>
                 </ul>
             </div>
