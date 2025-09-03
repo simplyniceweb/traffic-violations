@@ -23,10 +23,10 @@
                 <label for="status" class="font-semibold mr-2">Filter by Status:</label>
                 <select name="status" id="status" onchange="this.form.submit()" class="border rounded px-2 pr-8 py-1 w-40">
                     <option value="">All</option>
-                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                    {{-- <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="under_review" {{ request('status') == 'under_review' ? 'selected' : '' }}>Under Review</option> --}}
                     <option value="resolved" {{ request('status') == 'resolved' ? 'selected' : '' }}>Resolved</option>
                     <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                    <option value="under_review" {{ request('status') == 'under_review' ? 'selected' : '' }}>Under Review</option>
                 </select>
             </form>
         </div>
