@@ -9,11 +9,13 @@ class ReportAccepted extends Notification
 {
     use Queueable;
 
+    protected $status;
     protected $report;
 
-    public function __construct($report)
+    public function __construct($report, $status = 'accepted')
     {
         $this->report = $report;
+        $this->status = $status;
     }
 
     public function via($notifiable)
@@ -24,7 +26,7 @@ class ReportAccepted extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'Your report has been accepted by ' . $this->report->officer->name,
+            'message' => 'Your report has been ' . $this->status . ' by ' . $this->report->officer->name,
             'report_id' => $this->report->id,
         ];
     }

@@ -69,8 +69,11 @@ class ViolationController extends Controller
         if (!$report || $report->trashed()) {
             return redirect()->route('reports.index')->with('error', 'Cannot update a deleted or non-existent report.');
         }
-
-        // dd($request->reason);
+        
+        if ($request->status === 'rejected' || $request->status === 'resolved') {
+            $reporter = $report->user;
+            $reporter->notify(new ReportAccepted($report, $request->status));
+        }
 
         $report->update([
             'description' => $request->description,
@@ -84,8 +87,6 @@ class ViolationController extends Controller
             'landmark' => $request->landmark,
             'reason' => $request->reason
         ]);
-        // $report->refresh();
-        // dd($request->reason, $report->reason);
 
         // Sync violations
         $report->violations()->sync($request->violation_type);
