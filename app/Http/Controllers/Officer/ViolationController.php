@@ -11,6 +11,7 @@ use App\Models\ViolationCategory;
 use App\Http\Controllers\Controller;
 use App\Models\CitiesMunicipalities;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ReportAccepted;
 
 class ViolationController extends Controller
 {
@@ -134,9 +135,16 @@ class ViolationController extends Controller
             ], 400);
         }
 
-        $report->status = $request->status;
-        $report->officer_id = Auth::id();
+        $status = $request->status;
+
+        $report->status = $status;
+        $report->officer_id =  $status === 'pending' ? null : Auth::id();
         $report->save();
+
+        if ($status === 'under_review') {
+            $reporter = $report->user;
+            $reporter->notify(new ReportAccepted($report));
+        }
 
         return response()->json([
             'success' => true,

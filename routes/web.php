@@ -27,6 +27,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::post('/notifications/mark-as-read', function () {
+    $user = Auth::user();
+    $user->unreadNotifications->markAsRead();
+    return back();
+})->name('notifications.read');
+
 Route::get('/traffic-rules', [TrafficRulesController::class, 'index'])->name('traffic.rules');
 
 Route::get('/provinces/{region}', function ($regionId) {
