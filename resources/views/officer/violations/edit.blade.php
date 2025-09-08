@@ -101,6 +101,11 @@
             </div>
 
             <div class="mb-4">
+                <label for="accept" class="block font-semibold">Accept</label>
+                <input type="checkbox" name="accept" id="accept" value="1" {{ old('accept', $report->officer_id) ? 'checked' : '' }} class="h-4 w-4">
+            </div>
+
+            <div class="mb-4">
                 <label for="description" class="block font-semibold">Description</label>
                 <textarea name="description" id="description" readonly class="w-full border p-2 rounded text-gray-500 bg-gray-100 cursor-not-allowed">{{ old('description', $report->description) }}</textarea>
             </div>

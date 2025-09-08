@@ -61,7 +61,8 @@ class ViolationController extends Controller
             'landmark' => 'nullable|string',
             'evidence' => 'nullable|array',
             'evidence.*' => 'file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
-            'reason' => 'nullable|string'
+            'reason' => 'nullable|string',
+            'accept' => 'nullable|boolean'
         ]);
 
         $report = Report::with('attachments')->findOrFail($id);
@@ -69,11 +70,13 @@ class ViolationController extends Controller
         if (!$report || $report->trashed()) {
             return redirect()->route('reports.index')->with('error', 'Cannot update a deleted or non-existent report.');
         }
-        
-        if ($request->status === 'rejected' || $request->status === 'resolved') {
+
+        if ($report->officer !== null && ($request->status === 'rejected' || $request->status === 'resolved')) {
             $reporter = $report->user;
             $reporter->notify(new ReportAccepted($report, $request->status));
         }
+
+        // dd($request->accept);
 
         $report->update([
             'description' => $request->description,
@@ -85,7 +88,8 @@ class ViolationController extends Controller
             'status' => $request->status,
             'street' => $request->street,
             'landmark' => $request->landmark,
-            'reason' => $request->reason
+            'reason' => $request->reason,
+            'officer_id' => $request->accept ? Auth::id() : null,
         ]);
 
         // Sync violations

@@ -20,7 +20,8 @@ class Report extends Model
         'street',
         'landmark',
         'status',
-        'reason'
+        'reason',
+        'officer_id'
     ];
 
     public function reporter()
