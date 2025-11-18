@@ -129,6 +129,7 @@ class ReportController extends Controller
 
     protected function sendSmsToOfficers($reportId, $cityMunicipalityId)
     {
+        // Get on-duty officers for the city
         $officers = User::where('role', 'officer')
             ->where('city_municipality_id', $cityMunicipalityId)
             ->where('on_duty', 1)
@@ -138,6 +139,7 @@ class ReportController extends Controller
             return 'No on-duty officers available in this city.';
         }
 
+        // Normalize phone numbers to 09XXXXXXXXX
         $phoneNumbers = $officers->map(function ($num) {
             if (str_starts_with($num, '+63')) {
                 return '0' . substr($num, 3);
@@ -150,17 +152,25 @@ class ReportController extends Controller
             return $num;
         });
 
+        // Prepare message
         $message = "New traffic violation reported in your assigned city. Violation ID: {$reportId}. Please check the system for details.";
-        $bulkList = $phoneNumbers->join(',');
-        // dd($phoneNumbers, $bulkList);
-        // dd(env('IPROG_API_TOKEN'));
-        // dd(config('services.iprogsms.api_token'));
 
-        Http::post("https://www.iprogsms.com/api/v1/sms_messages", [
-            "api_token" => env('IPROG_API_TOKEN'),
-            "phone_number" => $bulkList,
-            "message" => $message,
-        ]);
+        if ($phoneNumbers->count() === 1) {
+            // Single officer → use single SMS endpoint
+            Http::post("https://www.iprogsms.com/api/v1/sms_messages", [
+                "api_token" => env('IPROG_API_TOKEN'),
+                "phone_number" => $phoneNumbers->first(),
+                "message" => $message,
+            ]);
+        } else {
+            // Multiple officers → use bulk SMS endpoint
+            $bulkList = $phoneNumbers->join(',');
+            Http::post("https://www.iprogsms.com/api/v1/sms_messages/send_bulk", [
+                "api_token" => env('IPROG_API_TOKEN'),
+                "phone_number" => $bulkList,
+                "message" => $message,
+            ]);
+        }
 
         return null;
     }
