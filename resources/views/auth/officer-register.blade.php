@@ -1,8 +1,6 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('officer.register.store') }}" enctype="multipart/form-data">
         @csrf
-
-        <input type="hidden" name="invitation" value="{{ $inviteCode }}">
 
         <!-- Name -->
         <div>
@@ -57,13 +55,9 @@
             </select>
         </div>
 
-        <!-- Role Dropdown -->
-        <div class="mt-4 hidden">
-            <label for="role" class="block font-medium text-sm text-gray-700">Register as</label>
-            <select id="role" name="role" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full">
-                <option value="reporter">Reporter</option>
-                <option value="officer">Officer</option>
-            </select>
+        <div class="mt-4">
+            <label for="phone" class="block font-medium text-sm text-gray-700">Phone</label>
+            <input id="phone" name="phone" type="tel" placeholder="09XXXXXXXXX" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" value="{{ old('phone') }}">
         </div>
 
         <div class="mt-4">

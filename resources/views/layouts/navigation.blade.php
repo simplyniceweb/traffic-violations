@@ -47,7 +47,10 @@
             </div>
 
             @php
-                $unreadCount = Auth::user()->unreadNotifications()->count();
+                $unreadCount = 0;
+                if ($user) {
+                    $unreadCount = Auth::user()->unreadNotifications()->count();
+                }
             @endphp
 
             @if($user)

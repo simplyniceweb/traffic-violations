@@ -18,7 +18,9 @@ use App\Http\Controllers\Admin\BarangayController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\ViolationController;
+use App\Http\Controllers\OfficerRegisterController;
 use App\Http\Controllers\ReportAttachmentController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
 use App\Http\Controllers\Officer\ViolationController as OfficerViolationController;
@@ -26,6 +28,8 @@ use App\Http\Controllers\Officer\ViolationController as OfficerViolationControll
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/get-cities/{provinceId}', [RegisteredUserController::class, 'getCities']);
 
 Route::post('/notifications/mark-as-read', function () {
     $user = Auth::user();
@@ -67,6 +71,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('officer/register', [OfficerRegisterController::class, 'create'])->name('officer.register');
+Route::post('officer/register', [OfficerRegisterController::class, 'store'])->name('officer.register.store');
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'role:admin'])->group(function () {

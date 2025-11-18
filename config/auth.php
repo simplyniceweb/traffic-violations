@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 return [
 
     /*
@@ -39,6 +41,12 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+    ],
+    'providers' => [
+        'officers' => [
+            'driver' => 'eloquent',
+            'model' => User::class,
         ],
     ],
 

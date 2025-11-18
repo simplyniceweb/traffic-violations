@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use App\Models\CitiesMunicipalities;
+use App\Models\Province;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
@@ -24,8 +25,14 @@ class RegisteredUserController extends Controller
     public function create(Request $request): View
     {
         $inviteCode = $request->query('invitation');
-        $cities = CitiesMunicipalities::all();
-        return view('auth.register', compact('cities', 'inviteCode'));
+        $provinces = Province::all();
+        return view('auth.register', compact('provinces', 'inviteCode'));
+    }
+
+    public function getCities($provinceId): \Illuminate\Http\JsonResponse
+    {
+        $cities = CitiesMunicipalities::where('province_id', $provinceId)->get();
+        return response()->json($cities);
     }
 
     /**

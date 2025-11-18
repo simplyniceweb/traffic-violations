@@ -27,7 +27,7 @@ class OfficerDashboardController extends Controller
                 SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved
             ")
             ->where('city_municipality_id', Auth::user()->city_municipality_id)
-            ->where('user_id', Auth::id())
+            // ->where('user_id', Auth::id())
             ->first();
 
         return view('dashboard.officer', [
