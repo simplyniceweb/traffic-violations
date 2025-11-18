@@ -34,5 +34,7 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'iprogsms' => [
+        'api_token' => env('IPROG_API_TOKEN'),
+    ],
 ];

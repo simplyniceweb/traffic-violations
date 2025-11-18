@@ -12,6 +12,12 @@
             </div>
         @endif
 
+        @if (session('warning'))
+            <div class="mb-4 p-4 rounded bg-orange-100 text-orange-800 border border-orange-300">
+                {{ session('warning') }}
+            </div>
+        @endif
+
         <div class="mb-6 flex justify-between items-center flex-wrap gap-4">
             <!-- Left: Create Button -->
             <a href="{{ route('reports.create') }}" class="bg-green-500 text-white rounded px-5 py-3 font-bold">

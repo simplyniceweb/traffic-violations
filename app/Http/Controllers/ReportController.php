@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Region;
 use App\Models\Report;
 use App\Models\Barangay;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\ReportAttachment;
 use App\Models\ViolationCategory;
 use App\Models\CitiesMunicipalities;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -118,7 +120,49 @@ class ReportController extends Controller
             }
         }
 
-        return redirect()->route('reports.index')->with('success', 'Report submitted successfully.');
+        $status = $this->sendSmsToOfficers($report->id, $request->city_municipality_id);
+
+        return redirect()->route('reports.index')
+            ->with('success', 'Report submitted successfully.')
+            ->with('warning', $status);
+    }
+
+    protected function sendSmsToOfficers($reportId, $cityMunicipalityId)
+    {
+        $officers = User::where('role', 'officer')
+            ->where('city_municipality_id', $cityMunicipalityId)
+            ->where('on_duty', 1)
+            ->pluck('phone');
+
+        if ($officers->isEmpty()) {
+            return 'No on-duty officers available in this city.';
+        }
+
+        $phoneNumbers = $officers->map(function ($num) {
+            if (str_starts_with($num, '+63')) {
+                return '0' . substr($num, 3);
+            }
+
+            if (str_starts_with($num, '63')) {
+                return '0' . substr($num, 2);
+            }
+
+            return $num;
+        });
+
+        $message = "New traffic violation reported in your assigned city. Violation ID: {$reportId}. Please check the system for details.";
+        $bulkList = $phoneNumbers->join(',');
+        // dd($phoneNumbers, $bulkList);
+        // dd(env('IPROG_API_TOKEN'));
+        // dd(config('services.iprogsms.api_token'));
+
+        Http::post("https://www.iprogsms.com/api/v1/sms_messages", [
+            "api_token" => env('IPROG_API_TOKEN'),
+            "phone_number" => $bulkList,
+            "message" => $message,
+        ]);
+
+        return null;
     }
 
     public function show($id)
@@ -229,6 +273,10 @@ class ReportController extends Controller
             }
         }
 
-        return redirect()->route('reports.index')->with('success', 'Report updated successfully.');
+        $status = $this->sendSmsToOfficers($report->id, $request->city_municipality_id);
+
+        return redirect()->route('reports.index')
+            ->with('success', 'Report updated successfully.')
+            ->with('warning', $status);
     }
 }

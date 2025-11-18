@@ -25,6 +25,10 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Officer\OfficerDashboardController;
 use App\Http\Controllers\Officer\ViolationController as OfficerViolationController;
 
+Route::get('/test-env', function () {
+    dd(env('IPROG_API_TOKEN'));
+});
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
