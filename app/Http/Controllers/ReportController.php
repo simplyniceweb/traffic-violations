@@ -155,12 +155,14 @@ class ReportController extends Controller
         // Prepare message
         $message = "New traffic violation reported in your assigned city. Violation ID: {$reportId}. Please check the system for details.";
 
+        // dd($phoneNumbers, $message);        
         if ($phoneNumbers->count() === 1) {
             // Single officer → use single SMS endpoint
             Http::post("https://www.iprogsms.com/api/v1/sms_messages", [
                 "api_token" => env('IPROG_API_TOKEN'),
                 "phone_number" => $phoneNumbers->first(),
                 "message" => $message,
+                "sms_provider" => 2
             ]);
         } else {
             // Multiple officers → use bulk SMS endpoint
@@ -169,6 +171,7 @@ class ReportController extends Controller
                 "api_token" => env('IPROG_API_TOKEN'),
                 "phone_number" => $bulkList,
                 "message" => $message,
+                "sms_provider" => 2
             ]);
         }
 
